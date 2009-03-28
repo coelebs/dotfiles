@@ -8,10 +8,9 @@
 xsetroot -cursor_name left_ptr &
 xmodmap ~/.Xmodmap &
 sh ~/.fehbg &
-#xbindkeys &
 conky | dzen2 -fn '-*-terminus-*-*-*-*-12-*-*-*-*-*-*-*' -bg black -fg grey -h 14 -w 1380 -x 300 -ta r &
 numlockx &
-unclutter 2 &
+unclutter -idle 2 -jitter 5 &
 setxkbmap us &
 
 exec xmonad

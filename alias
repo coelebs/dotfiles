@@ -1,1 +1,62 @@
-/home/vincent/.alias
+alias ls='ls --color=auto -F --group-directories-first'
+alias ll="ls -lh"
+alias y='yaourt'
+alias yi='yaourt -S'
+alias yr='yaourt -Rcns'
+alias yrd='yaourt -Rd'
+alias ysy='yaourt -Sy'
+alias ysb='yaourt -Sb'
+alias yu='yaourt -U'
+alias yup='yaourt -Syu --aur'
+alias m='mplayer'
+alias wget='wget -c'
+alias brand='growisofs -Z /dev/cdrw -v -l -R -J -joliet-long'
+alias so='source ~/.zshrc'
+alias cpu='sensors | grep Core'
+alias engels="LC_ALL=C"
+alias cl='clear; date +"%A %d %B %Y || %R"; ls'
+alias df='sh ~/Scripts/diskfree'
+alias back='cd $OLDPWD'
+alias mnv='mplayer -vc ffh264vdpau'
+alias go='startx'
+alias l.='ls -d .[^.]*'
+
+#to unpack files
+extract () {
+		if [ -f $1 ] ; then 
+			case $1 in
+             *.tar.bz2)   tar xjf $1        ;;
+             *.tar.gz)    tar xzf $1     ;;
+             *.bz2)       bunzip2 $1       ;;
+             *.rar)       unrar e $1     ;;
+             *.gz)        gunzip $1     ;;
+             *.tar)       tar xf $1        ;;
+             *.tbz2)      tar xjf $1      ;;
+             *.tgz)       tar xzf $1       ;;
+             *.zip)       unzip $1     ;;
+             *.Z)         uncompress $1  ;;
+             *.7z)        7z x $1    ;;
+             *)           echo "'$1' cannot be extracted via extract()" ;;
+         esac
+     else
+         echo "'$1' is not a valid file"
+     fi
+}
+
+function start() { sudo /etc/rc.d/$1 start; }
+function stop() { sudo /etc/rc.d/$1 stop; }
+function restart() { sudo /etc/rc.d/$1 restart; }
+
+function mkcd () {
+    mkdir "$@"
+    cd "$@"
+}
+
+function .. (){
+  local arg=${1:-1};
+  while [ $arg -gt 0 ]; do
+    cd .. >&/dev/null;
+    arg=$(($arg - 1));
+  done
+}
+

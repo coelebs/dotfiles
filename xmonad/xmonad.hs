@@ -37,7 +37,7 @@ main = do
 	xmonad $ defaultConfig
 	 {
 		 -- simple stuff
-        terminal           = "urxvtc"
+        terminal           	= "urxvtc"
         ,focusFollowsMouse  = True
         ,borderWidth        = 1
         ,modMask            = mod1Mask
@@ -49,16 +49,16 @@ main = do
         ,layoutHook         = avoidStruts $ tiled ||| hintedTile XMonad.Layout.HintedTile.Tall ||| Grid False ||| noBorders Full
 				,manageHook					= composeAll 		[ className =? "Opera" --> doF(W.shift "opera") ]
 				<+> manageDocks
-        ,logHook 			= dynamicLogWithPP defaultPP
-																{ ppCurrent  		= dzenColor "red" "" . wrap "[" "]" 
-																, ppVisible   		= wrap "[" "]^ca()"
-																, ppHidden	  		= dzenColor "grey" "" 
+        ,logHook 						= dynamicLogWithPP defaultPP
+																{ ppCurrent  				= dzenColor "red" "" . wrap "[" "]" 
+																, ppVisible   			= wrap "[" "]^ca()"
+																, ppHidden	  			= dzenColor "grey" "" 
 																, ppHiddenNoWindows	= dzenColor "grey"  ""
-																, ppUrgent    		= dzenColor "red" "" . wrap "^" ""
-																, ppLayout    		= dzenColor "grey" "" 
-																, ppTitle			= const ""	 
-																, ppOutput   		= hPutStrLn h                         	}
-																,startupHook		= setWMName "LG3D"
+																, ppUrgent    			= dzenColor "red" "" . wrap "^" ""
+																, ppLayout    			= dzenColor "grey" "" 
+																, ppTitle						= const ""	 
+																, ppOutput   				= hPutStrLn h }
+					,startupHook			= setWMName "LG3D"
 																}
 		
 		`additionalKeys`
@@ -91,7 +91,7 @@ main = do
 		--Hide dzen
 		,((modm, 								 xK_b), 			sendMessage ToggleStruts)
 		--Commands
-		,((modm,  							 xK_a),			spawn "urxvt")
+		,((modm,  							 xK_a),			spawn "urxvtc")
 		--Toggle mpd
 		,((modm,								 xK_p),			spawn "mpc toggle")
 		]

@@ -1,10 +1,1 @@
-startup_message 			off
-altscreen 						on
-term screen-256color
-vbell 								off
-
-screen
-screen ncmpcpp
-screen 
-
-caption always "%{= dd}%-w%{= dr}[ %n %t ]%{= dd}%+w %=  "
+/home/vincent/.screenrc

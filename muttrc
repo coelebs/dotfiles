@@ -1,0 +1,80 @@
+## This is me ##
+set realname="Vincent Kriek"
+set from="vincent@vincentkriek.nl"
+set signature="~/.mutt/signature"
+set imap_user="secret"
+set imap_pass="secret"
+
+## Layout ##
+set pager_index_lines=9
+set pager_context=1
+set markers=no
+set sort=threads
+set sort_aux=reverse-date
+
+## Aliases ##
+set alias_file= ~/.mutt/aliases
+set sort_alias= alias
+source $alias_file
+
+## Set correct decoder per mime-type ##
+set implicit_autoview
+auto_view text/html  application/x-pgp-message
+set mailcap_path="~/.mutt/mailcap"
+
+## Headers ##
+ignore *
+unignore To From Subject Date
+
+## Set the timeout ##
+set timeout=15
+
+## Imap ##
+set folder="imaps://imap.gmail.com:993"
+set spoolfile="+INBOX"
+set postponed="+[Gmail]/Drafts"
+set record="+[Gmail]/Sent Mail"
+set header_cache="~/.mutt/cache/headers"
+set message_cachedir="~/.mutt/cache/messages/"
+set certificate_file="~/.mutt/certificates"
+set move=no
+
+account-hook imaps://imap.gmail.com:993 'set imap_user="secret"; set imap_pass="secret";'
+account-hook imaps://mail.vincentkriek.nl/ 'set imap_user=secret; set imap_pass="secret";'
+
+## Sending ##
+set smtp_url="smtp://secret@gmail.com@smtp.gmail.com:587/"
+set edit_headers=yes
+set smtp_pass="secret"
+set allow_8bit=no
+set fast_reply
+
+## Colors ##
+color normal			default			default
+color attachment 	yellow 			default
+color hdrdefault 	default			black
+color indicator 	cyan				green
+color markers			brightred 	default
+color quoted			green 			default
+color signature 	cyan 				default
+color status			black				brightcyan
+color tilde				red 				default
+color tree				red					default
+color index 			brightgreen	default			~N
+color header 			yellow			black				"^(to):"
+	
+
+## Macro's ##
+macro index,pager g "<pipe-message>urlview<enter>" 'call urlview to extract URLs out of a message'
+bind editor <space> noop
+## Change folder macro's ##
+macro index <f1> "cimaps://imap.gmail.com:993/INBOX<enter>" "Go to inbox"
+macro index <f2> "cimaps://imap.gmail.com:993/[Gmail]/All Mail<enter>" "Go to all mail"
+macro index <f3> "cimaps://imap.gmail.com:993/[Gmail]/Drafts<enter>" "Go to drafts"
+macro index <f4> "cimaps://imap.gmail.com:993/[Gmail]/Sent Mail<enter>" "Go to sent mail"
+
+macro index <f5> "cimaps://mail.vincentkriek.nl/INBOX<enter>" "go to vincentkriek.nl inbox"
+
+macro index,pager A "<save-message>=[Gmail]/All Mail<enter>" "Archive mail"
+
+macro index,pager <F9> "<enter-command>set display_filter=\"tr -d \\r\"<Enter>" "filter display hiding spurious \^M" 

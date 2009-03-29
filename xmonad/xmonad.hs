@@ -64,32 +64,26 @@ main = do
 		`additionalKeys`
 		[
 		-- Move focus in workspace
- 		 ((modm,								xK_Right ), 	windows W.focusDown)				 
- 		,((modm,								xK_Left ), 		windows W.focusUp  )
+ 		 ((modm,								xK_Right ), windows W.focusDown)				 
+ 		,((modm,								xK_Left ), 	windows W.focusUp  )
         -- Moce windows in workspace
-		,((modm .|. shiftMask,	xK_Right ), 	windows W.swapDown  )
-		,((modm .|. shiftMask, 	xK_Left ), 		windows W.swapUp    )
+		,((modm .|. shiftMask,	xK_Right ), windows W.swapDown  )
+		,((modm .|. shiftMask, 	xK_Left ), 	windows W.swapUp    )
 		-- Move screenfocus	
-	  ,((controlMask,					xK_Right), 		nextScreen)	
-		,((controlMask,					xK_Left ), 		prevScreen)
+	  ,((controlMask,					xK_Right), 	nextScreen)	
+		,((controlMask,					xK_Left ), 	prevScreen)
 	  -- Move Screenfocus
-		,((modm,								xK_u), 		nextScreen)	
-		,((modm,           			xK_i), 		prevScreen)
+		,((modm,								xK_u), 			nextScreen)	
+		,((modm,           			xK_i), 			prevScreen)
    	-- Move windows across screens	
 		,((controlMask .|. shiftMask,		xK_Right), 		shiftNextScreen)
 		,((controlMask .|. shiftMask,		xK_Left),  		shiftPrevScreen)
-        -- Switch workspace
-		,((controlMask .|. modm, xK_Right), 		nextWS)
-		,((controlMask .|. modm, xK_Left),  		prevWS)
-        -- Move windows across workspaces
-		,((controlMask .|. modm .|. shiftMask, 	xK_Right), 		shiftToNext)
-		,((controlMask .|. modm .|. shiftMask, 	xK_Left),  		shiftToPrev)
 		-- Sink all windows into tiling
-		,((modm,								 xK_t), 			sinkAll)
+		,((modm,								 xK_t), 		sinkAll)
 		-- Prompt 
-		,((mod4Mask,						 xK_space),		shellPrompt defaultXPConfig)
+		,((mod4Mask,						 xK_space),	shellPrompt defaultXPConfig)
 		--Hide dzen
-		,((modm, 								 xK_b), 			sendMessage ToggleStruts)
+		,((modm, 								 xK_b), 		sendMessage ToggleStruts)
 		--Commands
 		,((modm,  							 xK_a),			spawn "urxvtc")
 		--Toggle mpd

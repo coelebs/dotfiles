@@ -3,7 +3,6 @@ altscreen 						on
 term screen-256color
 vbell 								off
 
-screen
 screen ncmpcpp
 screen 
 

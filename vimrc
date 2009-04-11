@@ -3,6 +3,7 @@ if filereadable("/etc/vim/vimrc.local")
 endif
 
 let timestamp_regexp = '\v\C%(<Last %([cC]hanged?|[Mm]odified):\s+)@<=.*$' 
+let timestamp_regexp = '\v\C%(<Last %([cC]hanged?|[Mm]odified):\s+)@<=.*$' 
 set number
 set background=dark
 set history=1000
@@ -31,6 +32,3 @@ set smarttab
 set vb t_vb=".
 
 map <F12> :make<CR>
-
-imap ;l <ESC>
-imap l; <ESC>

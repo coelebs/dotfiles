@@ -87,7 +87,7 @@ main = do
 		--Commands
 		,((modm,  							 xK_a),			spawn "urxvtc")
 		--Toggle mpd
-		,((modm,								 xK_p),			spawn "mpc toggle")
+		,((modm,								 xK_p),			spawn "mpc toggle --no-status")
 		]
 
 		where

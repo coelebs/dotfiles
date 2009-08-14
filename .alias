@@ -1,0 +1,97 @@
+#################################
+## Aliases 											#
+#################################
+alias ls='ls --color=auto -F --group-directories-first'
+alias ll='ls -lh'
+alias y='yaourt'
+alias yi='yaourt -S'
+alias yr='yaourt -Rcns'
+alias yrd='yaourt -Rd'
+alias ysy='yaourt -Sy'
+alias ysb='yaourt -Sb'
+alias yu='yaourt -U'
+alias yup='yaourt -Syu --aur'
+alias wget='wget -c'
+alias brand='growisofs -Z /dev/cdrw -v -l -R -J -joliet-long'
+alias so='source ~/.zshrc'
+alias engels="LC_ALL=C"
+alias cl='clear; date +"%A %d %B %Y || %R"; ls'
+alias back='cd $OLDPWD'
+alias go='startx'
+alias l.='ls -d .[^.]*'
+alias m='mplayer'
+
+#################################
+## Exports											#
+#################################
+export CLASSPATH=.:/home/vincent/Scripts/JavaLib:/home/vincent/Scripts/JavaLib/jid3lib-0.5.4.jar
+export BROWSER="firefox"
+export EDITOR="vim"
+
+#################################
+## Functions										#
+#################################
+
+#to unpack files
+extract () {
+		if [ -f $1 ] ; then 
+			case $1 in
+             *.tar.bz2)   tar xjf $1        ;;
+             *.tar.gz)    tar xzf $1     ;;
+             *.bz2)       bunzip2 $1       ;;
+             *.rar)       unrar e $1     ;;
+             *.gz)        gunzip $1     ;;
+             *.tar)       tar xf $1        ;;
+             *.tbz2)      tar xjf $1      ;;
+             *.tgz)       tar xzf $1       ;;
+             *.zip)       unzip $1     ;;
+             *.Z)         uncompress $1  ;;
+             *.7z)        7z x $1    ;;
+             *)           echo "'$1' cannot be extracted via extract()" ;;
+         esac
+     else
+         echo "'$1' is not a valid file"
+     fi
+}
+
+##Start, stop or restart daemons
+function start() { 
+	sudo /etc/rc.d/$1 start; 
+}
+
+function stop() { 
+	sudo /etc/rc.d/$1 stop; 
+}
+
+function restart() { 
+	sudo /etc/rc.d/$1 restart; 
+}
+
+function reprobe() {
+	sudo modprobe -r $1
+	sudo modprobe $1
+}
+
+##Make a directory and cd into immediately
+function mkcd () {
+    mkdir "$@"
+    cd "$@"
+}
+
+##Go up a specified amount of levels
+function .. (){
+  local arg=${1:-1};
+  while [ $arg -gt 0 ]; do
+    cd .. >&/dev/null;
+    arg=$(($arg - 1));
+  done
+}
+
+function mplayer () {
+	case $1 in
+		*.mkv)	/usr/bin/mplayer -vo vdpau -vc ffh264vdpau $1	;;
+		*.mp4)	/usr/bin/mplayer -vo vdpau -vc ffh264vdpau $1	;;
+		*.mov) 	/usr/bin/mplayer -vo vdpau -vc ffh264vdpau $1	;;
+		*)			/usr/bin/mplayer 													$1	;;
+	esac
+}

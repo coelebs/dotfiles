@@ -1,0 +1,12 @@
+startup_message off
+altscreen 			on
+term 						screen-256color
+vbell 					off
+monitor 				off
+
+screen 					ncmpcpp
+screen					ssh 192.168.1.100 -p 1312
+screen
+screen
+
+caption always 	"%{= dd}%-w%{= dr}[ %n %t ]%{= dd}%+w %=  "

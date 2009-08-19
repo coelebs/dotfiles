@@ -1,7 +1,7 @@
 #################################
 ## Aliases 											#
 #################################
-alias ls='ls -l --color=auto -F --group-directories-first'
+alias ls='ls -lh --color=auto -F --group-directories-first'
 alias ll='ls -lh'
 alias y='yaourt'
 alias yi='yaourt -S'

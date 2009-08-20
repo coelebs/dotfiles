@@ -51,7 +51,7 @@ main = do
         ,focusedBorderColor = "#b22222"
       
 		-- hooks, layouts
-        ,layoutHook         = avoidStruts $ tiled ||| hintedTile XMonad.Layout.HintedTile.Tall ||| noBorders Full ||| combineTwo (TwoPane 0.03 0.5) (simpleTabbed) (simpleTabbed) 
+        ,layoutHook         = avoidStruts $ tiled ||| hintedTile XMonad.Layout.HintedTile.Tall ||| noBorders Full ||| combineTwo (TwoPane 0.03 0.5) (tabbed shrinkText tabConfig) (simpleTabbed) 
 				,manageHook					= composeAll 		[ className =? "Opera" --> doF(W.shift "opera") ]
 				<+> manageDocks
         ,logHook 						= dynamicLogWithPP defaultPP
@@ -63,7 +63,7 @@ main = do
 																, ppLayout    			= dzenColor "grey" "" 
 																, ppTitle						= const ""	 
 																, ppOutput   				= hPutStrLn h }
-				,startupHook			= setWMName "LG3D"
+				,startupHook				= setWMName "LG3D"
 		}
 		
 		`additionalKeys`
@@ -98,3 +98,9 @@ main = do
 		where
 			tiled = XMonad.Tall 1 (3/100) (1/2)
 			hintedTile = HintedTile 1 (3/100) (1/2) TopLeft
+			tabConfig = defaultTheme 	{ inactiveBorderColor	= "#555b2f"
+																,inactiveColor 				= "#282828"
+																,inactiveTextColor 		= "#92A333"
+																,activeBorderColor  	= "#b22222"
+																,activeColor 					= "#282828"
+																,activeTextColor 			= "#92A333" }

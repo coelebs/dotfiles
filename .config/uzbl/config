@@ -6,12 +6,10 @@ set download_handler    = spawn $XDG_DATA_HOME/uzbl/scripts/dl-progress.sh
 set cookie_handler      = talk_to_socket $XDG_CACHE_HOME/uzbl/cookie_daemon_socket
 set new_window          = sh 'uzbl -u $8' # equivalent to the default behaviour
 set load_start_handler  = set status_message = <span foreground="khaki">wait</span>
-set load_commit_handler = set status_message = <span foreground="green">recv</span>
+set load_commit_handler = chain 'set status_message = <span foreground="green">recv</span>' 'script $XDG_DATA_HOME/uzbl/scripts/middle_click.js'
 set load_finish_handler = set status_message = <span foreground="gold">done</span>
 
 #Add support for middle click links
-set load_commit_handler = script $XDG_DATA_HOME/uzbl/scripts/middle_click.js 
-
 ##################
 ### Appearance ###
 ##################
@@ -26,7 +24,7 @@ set status_top          = 0
 set status_background   = #303030
 set status_pbar_done    = *
 set status_pbar_pending = -
-set status_pbar_width   = 12
+set status_pbar_width   = 10
 set insert_indicator    = I
 set command_indicator   = C
 set status_format       = <span font_family="monospace"><span background="khaki" foreground="black">[\@[\@MODE]\@]</span> [<span weight="bold" foreground="red">\@[\@keycmd]\@</span>] <span foreground="#606060"> \@[\@LOAD_PROGRESSBAR]\@ </span><span foreground="#99FF66">\@[\@uri]\@</span> <span foreground="khaki">\@[\@NAME]\@</span>   <span foreground="orange">\@status_message</span><span foreground="#606060"> \@[\@SELECTED_URI]\@</span></span>
@@ -69,11 +67,13 @@ bind    gi              = script $XDG_DATA_HOME/uzbl/scripts/go_input.js
 
 #implement my bookmarks
 bind    a _             = spawn $XDG_DATA_HOME/uzbl/scripts/keywordBm.py add "%s"
-bind    g _             = spawn $XDG_DATA_HOME/uzbl/scripts/keywordBm.py get "%s"
 bind    t _             = spawn $XDG_DATA_HOME/uzbl/scripts/keywordBm.py tab "%s"
 bind    o _             = spawn $XDG_DATA_HOME/uzbl/scripts/keywordBm.py open "%s"
-bind    bmarks          = spawn $XDG_DATA_HOME/uzbl/scripts/keywordBm.py dopen
-bind    bookmarks       = uri file://$XDG_DATA_HOME/uzbl/keywordBookmarks.html
+bind    bmdel           = spawn $XDG_DATA_HOME/uzbl/scripts/keywordBm.py del
+
+
+bind    e               = spawn $XDG_DATA_HOME/uzbl/scripts/menu.py open 
+bind    E               = spawn $XDG_DATA_HOME/uzbl/scripts/menu.py tab
 
 #Undo
 bind    d               = chain 'spawn $XDG_DATA_HOME/uzbl/scripts/exit.sh' 'exit'

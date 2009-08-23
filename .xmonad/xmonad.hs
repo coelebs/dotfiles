@@ -6,30 +6,25 @@ import XMonad.Hooks.SetWMName
 import IO
 import XMonad.Hooks.DynamicLog
 import XMonad.Util.Run
-import XMonad.Util.Dzen
 import XMonad.Hooks.ManageDocks
 
 --For the Keybindings
 import XMonad.Actions.CycleWS
 import XMonad.Util.EZConfig
 import XMonad.Actions.SinkAll
-import XMonad.Layout.WindowNavigation
+
+import XMonad.Actions.UpdatePointer
 
 --Layouts
-import XMonad.Layout.HintedGrid
 import XMonad.Layout.NoBorders
 import XMonad.Layout.HintedTile
 import XMonad.Layout.Tabbed
 import XMonad.Layout.Combo
 import XMonad.Layout.TwoPane
-import XMonad.Layout.PerWorkspace
+import XMonad.Layout.Named
 
 --Java issues
 import XMonad.Hooks.SetWMName
-
---For a kind-of dmenu
-import XMonad.Prompt
-import XMonad.Prompt.Shell
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
@@ -51,9 +46,8 @@ main = do
         ,focusedBorderColor = "#b22222"
       
 		-- hooks, layouts
-        ,layoutHook         = avoidStruts $ tiled ||| hintedTile XMonad.Layout.HintedTile.Tall ||| noBorders Full ||| combineTwo (TwoPane 0.03 0.5) (tabbed shrinkText tabConfig) (simpleTabbed) 
-				,manageHook					= composeAll 		[ className =? "Opera" --> doF(W.shift "opera") ]
-				<+> manageDocks
+        ,layoutHook         = avoidStruts $ tiled ||| named "HintedTall" (hintedTile XMonad.Layout.HintedTile.Tall) ||| noBorders Full ||| named "Tabbed" (combineTwo (TwoPane 0.03 0.5) (tabbed shrinkText tabConfig) (simpleTabbed))
+				,manageHook					= composeAll 		[]	<+> manageDocks
         ,logHook 						= dynamicLogWithPP defaultPP
 																{ ppCurrent  				= dzenColor "red" "" . wrap "[" "]" 
 																, ppVisible   			= wrap "[" "]^ca()"
@@ -62,7 +56,8 @@ main = do
 																, ppUrgent    			= dzenColor "red" "" . wrap "^" ""
 																, ppLayout    			= dzenColor "grey" "" 
 																, ppTitle						= const ""	 
-																, ppOutput   				= hPutStrLn h }
+																, ppOutput   				= hPutStrLn h } 
+																>> updatePointer Nearest
 				,startupHook				= setWMName "LG3D"
 		}
 		
@@ -86,7 +81,7 @@ main = do
 		-- Sink all windows into tiling
 		,((modm,								 xK_t), 		sinkAll)
 		-- Prompt 
-		,((mod4Mask,						 xK_space),	shellPrompt defaultXPConfig)
+		,((mod4Mask,						 xK_space),	spawn "dmenu_run -b -fn terminus -nb '#252525' -nf '#81902D' -sb '#AE4747'")
 		--Hide dzen
 		,((modm, 								 xK_b), 		sendMessage ToggleStruts)
 		--Commands
@@ -100,7 +95,7 @@ main = do
 			hintedTile = HintedTile 1 (3/100) (1/2) TopLeft
 			tabConfig = defaultTheme 	{ inactiveBorderColor	= "#555b2f"
 																,inactiveColor 				= "#282828"
-																,inactiveTextColor 		= "#92A333"
+																,inactiveTextColor 		= "#A4A333"
 																,activeBorderColor  	= "#b22222"
 																,activeColor 					= "#282828"
-																,activeTextColor 			= "#92A333" }
+																,activeTextColor 			= "#A4A333" }

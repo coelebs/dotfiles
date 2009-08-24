@@ -32,7 +32,7 @@ set smartindent
 "Visual bells off
 set vb t_vb=".
 
-set tags+=~/.vim/systags
 set runtimepath=~/.vim,/usr/share/vim,/usr/share/vim/vim72
 syntax on
 map <F12> :make<CR>
+map <F2> :NERDTree<CR>

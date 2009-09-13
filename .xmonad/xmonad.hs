@@ -13,8 +13,6 @@ import XMonad.Actions.CycleWS
 import XMonad.Util.EZConfig
 import XMonad.Actions.SinkAll
 
-import XMonad.Actions.UpdatePointer
-
 --Layouts
 import XMonad.Layout.NoBorders
 import XMonad.Layout.HintedTile
@@ -22,6 +20,8 @@ import XMonad.Layout.Tabbed
 import XMonad.Layout.Combo
 import XMonad.Layout.TwoPane
 import XMonad.Layout.Named
+import XMonad.Layout.PerWorkspace
+import XMonad.Layout.WindowNavigation
 
 --Java issues
 import XMonad.Hooks.SetWMName
@@ -46,25 +46,29 @@ main = do
         ,focusedBorderColor = "#b22222"
       
 		-- hooks, layouts
-        ,layoutHook         = avoidStruts $ tiled ||| named "HintedTall" (hintedTile XMonad.Layout.HintedTile.Tall) ||| noBorders Full ||| named "Tabbed" (combineTwo (TwoPane 0.03 0.5) (tabbed shrinkText tabConfig) (simpleTabbed))
+        ,layoutHook         = avoidStruts $ onWorkspace "www" (named "Tabbed" (windowNavigation (combineTwo (TwoPane 0.03 0.5) (tabbed shrinkText tabConfig) (Mirror (tiled))))) $ tiled ||| named "HintedTall" (hintedTile XMonad.Layout.HintedTile.Tall) ||| noBorders Full
 				,manageHook					= composeAll 		[]	<+> manageDocks
-        ,logHook 						= dynamicLogWithPP defaultPP
-																{ ppCurrent  				= dzenColor "red" "" . wrap "[" "]" 
-																, ppVisible   			= wrap "[" "]^ca()"
-																, ppHidden	  			= dzenColor "grey" "" 
-																, ppHiddenNoWindows	= dzenColor "grey"  ""
+        ,logHook 						= dynamicLogWithPP dzenPP
+																{ ppCurrent  				= dzenColor "red" "" . wrap "[" "] " 
+																, ppVisible   			= wrap "[" "] ^ca()"
+																, ppHidden	  			= dzenColor "grey" "" . wrap "" " "
+																, ppHiddenNoWindows	= dzenColor "grey"  "" . wrap "" " "
 																, ppUrgent    			= dzenColor "red" "" . wrap "^" ""
 																, ppLayout    			= dzenColor "grey" "" 
 																, ppTitle						= const ""	 
 																, ppOutput   				= hPutStrLn h } 
-																>> updatePointer Nearest
 				,startupHook				= setWMName "LG3D"
 		}
 		
 		`additionalKeys`
 		[
 		-- Move focus in workspace
- 		 ((modm,								xK_Right ), windows W.focusDown)				 
+
+		 ((modm .|. controlMask .|. shiftMask, xK_Right), sendMessage $ Move R)
+		, ((modm .|. controlMask .|. shiftMask, xK_Left ), sendMessage $ Move L)
+		, ((modm .|. controlMask .|. shiftMask, xK_Up   ), sendMessage $ Move U)
+		, ((modm .|. controlMask .|. shiftMask, xK_Down ), sendMessage $ Move D)
+ 		, ((modm,								xK_Right ), windows W.focusDown)				 
  		,((modm,								xK_Left ), 	windows W.focusUp  )
         -- Moce windows in workspace
 		,((modm .|. shiftMask,	xK_Right ), windows W.swapDown  )
@@ -86,6 +90,7 @@ main = do
 		,((modm, 								 xK_b), 		sendMessage ToggleStruts)
 		--Commands
 		,((modm,  							 xK_a),			spawn "urxvtc -e screen -xRR")
+		,((modm, 								 xK_z),     spawn "uzbl")
 		--Toggle mpd
 		,((modm,								 xK_p),			spawn "ncmpcpp toggle")
 		]

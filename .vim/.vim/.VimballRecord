@@ -1,0 +1,2 @@
+download_script.php?src_id=11853: call delete('/home/vincent/.vim/doc/supertab.txt')|call delete('/home/vincent/.vim/plugin/supertab.vim')
+rename.vba: call delete('/home/vincent/.vim/plugin/rename.vim')

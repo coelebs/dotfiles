@@ -35,7 +35,6 @@ set visualbell t_vb=".
 set novisualbell
 set completeopt=menu,longest,preview
 set tags=./tags
-set list
 set listchars=tab:▸\ 
 
 command Makeprg :echo "No makefile found and no makeprg set" 

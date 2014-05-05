@@ -1,8 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =6
-let g:netrw_dirhist_1='/home/vincent/.emacs.d/elpa/swank-clojure-1.1.0'
-let g:netrw_dirhist_2='/home/vincent/Dropbox/School/Jaar 2/Project/Pong/MI4ITIc/trunk/Pong/Pong/Transitielijst'
-let g:netrw_dirhist_3='scp://root@localhost/Groep_C/'
-let g:netrw_dirhist_4='scp://root@localhost:8022/Groep_C/'
-let g:netrw_dirhist_5='scp://root@localhost:8022/Groep_C/Kernel/'
-let g:netrw_dirhist_6='/etc/rc.d'

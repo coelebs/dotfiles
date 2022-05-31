@@ -1,0 +1,20 @@
+# history specification
+export HISTSIZE=2000
+export HISTFILE="$HOME/.history"
+export SAVEHIST=$HISTSIZE
+setopt hist_ignore_all_dups
+
+## source aliases
+if [ -f ~/.alias ]; then
+	. ~/.alias
+fi
+
+##Disable system bell
+setopt nobeep
+
+export GOPATH="$HOME/local/go/"
+export PATH="$GOPATH/bin:$PATH:~/local/bin"
+export EDITOR="nvim"
+export TERMINAL="alacritty"
+
+eval $(starship init zsh)

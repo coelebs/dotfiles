@@ -1,0 +1,33 @@
+set from = "vincent@kriek.org"
+set realname = "Vincent Kriek"
+
+# Cache
+set header_cache = "~/.cache/neomutt/headers"
+set message_cachedir = "~/.cache/neomutt/bodies"
+
+set record="+Sent"
+set postponed="+Drafts"
+set folder = "~/local/mail/"
+
+# Options
+set sort = threads
+set sort_aux = last-date-received
+set editor="nvim"
+set edit_headers=yes
+
+set nm_default_url = "notmuch://$HOME/local/mail/"
+set virtual_spoolfile=yes
+virtual-mailboxes "this year" "notmuch://?query=tag:inbox AND date:\"365d..now\""
+virtual-mailboxes "all" "notmuch://?query=tag:inbox"
+virtual-mailboxes "sent" "notmuch://?query=from:vincent@kriek.org"
+
+set sidebar_visible=true
+
+bind index \Cj sidebar-next
+bind index \Ck sidebar-prev
+bind index \Co sidebar-open
+
+source ~/.config/neomutt/gruvbox/colors-gruvbox-shuber.muttrc
+source ~/.config/neomutt/gruvbox/colors-gruvbox-shuber-extended.muttrc
+
+set sendmail="/usr/bin/msmtp"

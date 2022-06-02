@@ -11,6 +11,11 @@ require "user.toggleterm"
 require "user.autopairs"
 require "user.fidget"
 
+vim.cmd [[                           
+let g:vimwiki_list = [{'path': '~/local/wiki/',
+                      \ 'syntax': 'markdown', 'ext': '.md'}]
+]]
+
 vim.cmd [[autocmd FileType go lua require('user.ft.go')]]
 vim.cmd [[autocmd FileType typescript lua require('user.ft.typescript')]]
 vim.cmd [[autocmd FileType markdown lua require('user.ft.markdown')]]

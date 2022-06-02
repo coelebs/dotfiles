@@ -59,6 +59,9 @@ local plugins = function(use)
       -- Debug
       use 'mfussenegger/nvim-dap'
       use 'leoluz/nvim-dap-go'
+
+
+      use {'vimwiki/vimwiki'}
   end
 
 

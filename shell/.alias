@@ -1,5 +1,6 @@
 alias ls='ls --color -lh --group-directories-first'
 alias vim='nvim'
+alias cat='bat'
 
 #to unpack files
 extract () {

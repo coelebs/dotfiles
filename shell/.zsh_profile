@@ -13,8 +13,10 @@ fi
 setopt nobeep
 
 export GOPATH="$HOME/local/go/"
-export PATH="$GOPATH/bin:$PATH:~/local/bin"
+export PATH="$GOPATH/bin:$PATH:$HOME/local/bin"
 export EDITOR="nvim"
 export TERMINAL="alacritty"
+
+bindkey -s ^f "tmux-sessionizer\n"
 
 eval $(starship init zsh)

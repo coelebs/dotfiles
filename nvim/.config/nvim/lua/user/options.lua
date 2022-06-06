@@ -20,4 +20,4 @@ vim.opt.relativenumber = true
 
 vim.opt.cpoptions:append("$")  -- Append dollar sign instead of removing the word, thanks Derek Wyatt
 
--- vim.cmd [[ colorscheme dracula ]]
+vim.cmd [[ colorscheme dracula ]]

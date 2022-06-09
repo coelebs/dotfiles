@@ -36,6 +36,7 @@ local plugins = function(use)
       -- Supercool neovim
       use 'nvim-telescope/telescope.nvim'
       use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', }
+      use 'nvim-treesitter/nvim-treesitter-context'
       use 'akinsho/toggleterm.nvim'
 
       -- Colorschemes

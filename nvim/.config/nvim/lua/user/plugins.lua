@@ -38,6 +38,7 @@ local plugins = function(use)
       use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', }
       use 'nvim-treesitter/nvim-treesitter-context'
       use 'akinsho/toggleterm.nvim'
+      use "lukas-reineke/indent-blankline.nvim"
 
       -- Colorschemes
       use 'dracula/vim'

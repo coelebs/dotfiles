@@ -19,3 +19,5 @@ let g:vimwiki_list = [{'path': '~/local/wiki/',
 vim.cmd [[autocmd FileType go lua require('user.ft.go')]]
 vim.cmd [[autocmd FileType typescript lua require('user.ft.typescript')]]
 vim.cmd [[autocmd FileType markdown lua require('user.ft.markdown')]]
+
+require("indent_blankline").setup {}

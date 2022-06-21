@@ -15,7 +15,8 @@ telescope.setup{
         -- e.g. git_{create, delete, ...}_branch for the git_branches picker
         ["<C-h>"] = "which_key"
       }
-    }
+    },
+    layout_strategy = "vertical"
   },
   pickers = {
     -- Default configuration for builtin pickers goes here:
@@ -32,6 +33,10 @@ telescope.setup{
     --   extension_config_key = value,
     -- }
     -- please take a look at the readme of the extension you want to configure
+        fzy_native = {
+            override_generic_sorter = false,
+            override_file_sorter = true,
+        }
   }
 }
 

@@ -1,34 +1,32 @@
-local opts = { noremap = true, silent = true }
-local keymap = vim.api.nvim_set_keymap
+local function nnoremap(lhs, rhs)
+    vim.keymap.set("n", lhs, rhs, { noremap = true })
+end
 
-keymap("", " ", "<Nop>", opts)
 vim.g.mapleader = " "
-vim.g.mapleader = " "
 
-keymap("n", "<leader>g", ":Neogit<cr>", opts)
-keymap("n", "<leader>gd", ":Gitsigns preview_hunk<cr>", opts)
-keymap("n", "<leader>gs", ":Gitsigns stage_hunk<cr>", opts)
+nnoremap("<leader>gg", ":Neogit<cr>")
+nnoremap("<leader>gd", ":Gitsigns preview_hunk<cr>")
+nnoremap("<leader>gs", ":Gitsigns stage_hunk<cr>")
 
-keymap("n", "<leader>f", ":Telescope live_grep<cr>", opts)
-keymap("n", "<leader>b", ":lua require'telescope.builtin'.buffers{}<cr>", opts)
-keymap("n", "<leader>r", ":lua require'telescope.builtin'.lsp_references{}<cr>", opts)
-keymap("n", "<leader>t", ":TroubleToggle<cr>", opts)
+nnoremap("<c-f>", ":Telescope find_files<cr>")
+nnoremap("<leader>fg", ":Telescope live_grep<cr>")
+nnoremap("<leader>fb", require("telescope.builtin").buffers)
+nnoremap("<leader>fh", require("telescope.builtin").help_tags)
+nnoremap("<leader>fr", require("telescope.builtin").lsp_references)
+nnoremap("<leader>t", ":TroubleToggle<cr>")
 
-keymap("n", "<leader>qc", ":cclose<cr>", opts)
+nnoremap("<leader>qc", ":cclose<cr>")
 
-keymap("n", "<F2>", ":NvimTreeToggle<cr>", opts)
-keymap("n", "<F4>", ":set list!<cr>", opts)
+nnoremap("<F2>", ":NvimTreeToggle<cr>")
+nnoremap("<F4>", ":set list!<cr>")
 
-keymap("n", "<F5>", ":set hls!<cr>", opts)
+nnoremap("<F5>", ":set hls!<cr>")
 
-keymap("n", "<F7>", ":cprev<cr>", opts)
-keymap("n", "<F8>", ":cnext<cr>", opts)
+nnoremap("<F7>", ":cprev<cr>")
+nnoremap("<F8>", ":cnext<cr>")
 
-keymap("n", "<c-f>", ":Telescope find_files<cr>", opts)
 
-keymap("n", "<C-h>", "<C-w>h", opts)
-keymap("n", "<C-j>", "<C-w>j", opts)
-keymap("n", "<C-k>", "<C-w>k", opts)
-keymap("n", "<C-l>", "<C-w>l", opts)
-
-keymap("n", "<C-n>", ":e ~/Documents/notes.md<CR>Go", opts)
+nnoremap("<C-h>", "<C-w>h")
+nnoremap("<C-j>", "<C-w>j")
+nnoremap("<C-k>", "<C-w>k")
+nnoremap("<C-l>", "<C-w>l")

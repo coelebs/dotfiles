@@ -17,8 +17,8 @@ vim.opt.completeopt    = {"menu", "menuone", "noselect"}
 vim.opt.numberwidth    = 5
 vim.opt.relativenumber = true
 
-
 vim.opt.cpoptions:append("$")  -- Append dollar sign instead of removing the word, thanks Derek Wyatt
+vim.opt.undofile = true
+vim.opt.clipboard = "unnamedplus"
 
 vim.cmd [[ colorscheme dracula ]]
-vim.cmd [[set clipboard+=unnamedplus]]

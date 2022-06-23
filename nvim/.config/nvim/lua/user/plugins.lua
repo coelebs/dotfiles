@@ -40,6 +40,7 @@ local plugins = function(use)
       use 'nvim-treesitter/nvim-treesitter-context'
       use 'akinsho/toggleterm.nvim'
       use "lukas-reineke/indent-blankline.nvim"
+      use("folke/trouble.nvim")
 
       -- Colorschemes
       use 'dracula/vim'
@@ -55,14 +56,6 @@ local plugins = function(use)
           ft = {'markdown'}
       }
       use {'dhruvasagar/vim-table-mode'}
-
-      -- Test
-      use {'skywind3000/asyncrun.vim'}
-
-      -- Debug
-      use 'mfussenegger/nvim-dap'
-      use 'leoluz/nvim-dap-go'
-
 
       use {'vimwiki/vimwiki'}
   end

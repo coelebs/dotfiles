@@ -13,11 +13,11 @@ nnoremap("<leader>fg", ":Telescope live_grep<cr>")
 nnoremap("<leader>fb", require("telescope.builtin").buffers)
 nnoremap("<leader>fh", require("telescope.builtin").help_tags)
 nnoremap("<leader>fr", require("telescope.builtin").lsp_references)
-nnoremap("<leader>t", ":TroubleToggle<cr>")
+nnoremap("<leader>tt", "<cmd>TroubleToggle<cr>")
+nnoremap("<leader>td", "<cmd>TroubleToggle document_diagnostics<cr>")
 
 nnoremap("<leader>qc", ":cclose<cr>")
 
-nnoremap("<F2>", ":NvimTreeToggle<cr>")
 nnoremap("<F4>", ":set list!<cr>")
 
 nnoremap("<F5>", ":set hls!<cr>")

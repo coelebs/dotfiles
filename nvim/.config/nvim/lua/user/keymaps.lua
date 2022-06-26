@@ -7,6 +7,7 @@ vim.g.mapleader = " "
 nnoremap("<leader>gg", ":Neogit<cr>")
 nnoremap("<leader>gd", ":Gitsigns preview_hunk<cr>")
 nnoremap("<leader>gs", ":Gitsigns stage_hunk<cr>")
+nnoremap("<leader>gS", ":Gitsigns stage_buffer<cr>")
 
 nnoremap("<c-f>", ":Telescope find_files<cr>")
 nnoremap("<leader>fg", ":Telescope live_grep<cr>")

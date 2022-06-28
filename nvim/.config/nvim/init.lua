@@ -11,6 +11,7 @@ require("user.toggleterm")
 require("user.autopairs")
 require("user.fidget")
 require("user.trouble")
+require("user.functions")
 
 vim.cmd [[
 let g:vimwiki_list = [{'path': '~/local/wiki/',

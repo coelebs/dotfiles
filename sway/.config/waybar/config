@@ -1,0 +1,119 @@
+{
+    "layer": "top", // Waybar at top layer
+    "height": 20, // Waybar height (to be removed for auto height)
+    "modules-left": ["sway/workspaces", "sway/mode", "custom/media"],
+    "modules-center": ["sway/window"],
+    "modules-right": ["custom/notmuch", "custom/waybar-mpris", "pulseaudio", "clock", "tray", "battery"],
+     "sway/workspaces": {
+         "disable-scroll": true,
+         "all-outputs": false,
+         "format": "{name}: {icon}",
+         "format-icons": {
+             "1": "",
+             "2": ">_",
+             "3": "",
+             "4": "",
+             "5": "",
+             "urgent": "",
+             "focused": "",
+             "default": ""
+         }
+     },
+    "custom/notmuch": {
+        "exec": "notmuch count tag:runread",
+        "format": " {} ✉️ ",
+        "interval": "120",
+    },
+    "sway/window": {
+        "icon": false,
+    },
+    "sway/mode": {
+        "format": "<span style=\"italic\">{}</span>"
+    },
+    "custom/waybar-mpris": {
+	    "return-type": "json",
+	    "exec": "waybar-mpris --position --autofocus",
+	    "on-click": "waybar-mpris --send toggle",
+	    // This option will switch between players on right click.
+	    "on-click-right": "waybar-mpris --send player-next",
+	    // The options below will switch the selected player on scroll
+	    // "on-scroll-up": "waybar-mpris --send player-next",
+	    // "on-scroll-down": "waybar-mpris --send player-prev",
+	    // The options below will go to next/previous track on scroll
+	    // "on-scroll-up": "waybar-mpris --send next",
+	    // "on-scroll-down": "waybar-mpris --send prev",
+	    "escape": true,
+    },
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "",
+            "deactivated": ""
+        }
+    },
+    "tray": {
+        // "icon-size": 21,
+        "spacing": 10
+    },
+    "clock": {
+        // "timezone": "America/New_York",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format-alt": "{:%Y-%m-%d}"
+    },
+    "cpu": {
+        "format": "{usage}% ",
+        "tooltip": false
+    },
+    "memory": {
+        "format": "{}% "
+    },
+    "temperature": {
+        // "thermal-zone": 2,
+        // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+        "critical-threshold": 80,
+        // "format-critical": "{temperatureC}°C {icon}",
+        "format": "{temperatureC}°C {icon}",
+        "format-icons": ["", "", ""]
+    },
+    "backlight": {
+        // "device": "acpi_video1",
+        "format": "{percent}% {icon}",
+        "format-icons": ["", ""]
+    },
+    "battery": {
+        "states": {
+            // "good": 95,
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{capacity}% {icon}",
+        "format-charging": "{capacity}% ",
+        "format-plugged": "{capacity}% ",
+        "format-alt": "{time} {icon}",
+        // "format-good": "", // An empty format will hide the module
+        // "format-full": "",
+        "format-icons": ["", "", "", "", ""]
+    },
+    "battery#bat2": {
+        "bat": "BAT2"
+    },
+    "pulseaudio": {
+        // "scroll-step": 1, // %, can be a float
+        "format": "{volume}% {icon} {format_source}",
+        "format-bluetooth": "{volume}% {icon} {format_source}",
+        "format-bluetooth-muted": " {icon} {format_source}",
+        "format-muted": " {format_source}",
+        "format-source": "{volume}% ",
+        "format-source-muted": "",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
+        },
+        "on-click": "pavucontrol"
+    },
+}

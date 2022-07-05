@@ -3,7 +3,7 @@
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
-    selected=$(find /volume1/ ~/projects ~/.dotfiles -mindepth 1 -maxdepth 1 -type d | fzf)
+    selected=$(find ~/projects ~/personal -mindepth 1 -maxdepth 1 -type d | fzf)
 fi
 
 if [[ -z $selected ]]; then
@@ -21,7 +21,7 @@ fi
 # If there is at least a tmux server running
 # And if you're not inside tmux, then either attach to the session or create it:
 if [ -z "$TMUX" ]; then
-    tmux new-session -A -s $selected_name -c $selected 
+    tmux new-session -A -s $selected_name -c $selected
     return 0
 fi
 

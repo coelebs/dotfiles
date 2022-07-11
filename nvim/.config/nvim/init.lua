@@ -14,7 +14,7 @@ require("user.trouble")
 require("user.functions")
 
 vim.cmd [[
-let g:vimwiki_list = [{'path': '~/local/wiki/',
+let g:vimwiki_list = [{'path': '~/projects/wiki/',
                       \ 'syntax': 'markdown', 'ext': '.md'}]
 ]]
 

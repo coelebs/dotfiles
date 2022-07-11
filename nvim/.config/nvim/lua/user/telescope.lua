@@ -33,11 +33,11 @@ telescope.setup{
     --   extension_config_key = value,
     -- }
     -- please take a look at the readme of the extension you want to configure
-        fzy_native = {
-            override_generic_sorter = false,
-            override_file_sorter = true,
-        }
+ --       fzy_native = {
+ --           override_generic_sorter = false,
+ --           override_file_sorter = true,
+ --       }
   }
 }
 
-telescope.load_extension('fzy_native')
+--telescope.load_extension('fzy_native')

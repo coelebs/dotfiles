@@ -13,7 +13,7 @@ fi
 setopt nobeep
 
 export GOPATH="$HOME/local/go/"
-export PATH="$GOPATH/bin:$PATH:$HOME/local/bin:/usr/bin/vendor_perl/"
+export PATH="$GOPATH/bin:$PATH:$HOME/local/bin:/usr/bin/vendor_perl/:$HOME/.local/bin/"
 export EDITOR="nvim"
 export TERMINAL="alacritty"
 

@@ -19,4 +19,6 @@ export TERMINAL="alacritty"
 
 bindkey -s ^f "tmux-sessionizer\n"
 
+setopt no_hist_verify
+
 eval $(starship init zsh)

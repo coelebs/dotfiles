@@ -34,14 +34,18 @@ local plugins = function(use)
       use({ "sindrets/diffview.nvim", requires = "nvim-lua/plenary.nvim" })
       use({ "lewis6991/gitsigns.nvim", requires = "nvim-lua/plenary.nvim" })
 
-      -- Supercool neovim
+      -- Telescope
       use("nvim-telescope/telescope.nvim")
       use("nvim-telescope/telescope-fzy-native.nvim")
+
+      -- Treesitter
       use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate", })
       use("nvim-treesitter/nvim-treesitter-context")
+
       use("akinsho/toggleterm.nvim")
       use("lukas-reineke/indent-blankline.nvim")
       use("folke/trouble.nvim")
+      use("jose-elias-alvarez/null-ls.nvim")
 
       -- Colorschemes
       use("dracula/vim")

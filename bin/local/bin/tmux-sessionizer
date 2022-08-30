@@ -3,14 +3,16 @@
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
-    selected=$(find ~/projects ~/personal -mindepth 1 -maxdepth 1 -type d | fzf)
+    selected=$(find ~/projects/ -maxdepth 3  -not -path '*/.*'  -type d -execdir test -e {}/.git \; -print | fzf)
 fi
 
 if [[ -z $selected ]]; then
     exit 0
 fi
 
-selected_name=$(basename "$selected" | tr . _)
+worktreename=$(basename $(dirname "$selected"))
+selected_name="${worktreename:0:2}/$(basename "$selected" | tr . _)"
+echo ${selected_name}; exit 1
 tmux_running=$(pgrep tmux)
 
 if [ ! $tmux_running ]; then

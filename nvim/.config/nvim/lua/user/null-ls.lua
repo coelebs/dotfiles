@@ -6,7 +6,12 @@ end
 
 null_ls.setup({
     sources = {
-        null_ls.builtins.formatting.clang_format,
-        null_ls.builtins.formatting.gofmt,
     },
+})
+
+local formatgrp = vim.api.nvim_create_augroup("Formatting", { clear = true })
+vim.api.nvim_create_autocmd("BufWritePre", {
+  callback = vim.lsp.buf.formatting_sync,
+  pattern = "*.go,*.c,*.h,*.cpp",
+  group = formatgrp,
 })

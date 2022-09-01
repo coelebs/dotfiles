@@ -17,22 +17,14 @@ local plugins = function(use)
       use("hrsh7th/cmp-path") -- path completions
       use("hrsh7th/cmp-cmdline") -- cmdline completions
       use("hrsh7th/cmp-nvim-lsp")
-      use("hrsh7th/cmp-nvim-lua")
-      use("saadparwaiz1/cmp_luasnip") -- snippet completions
-      use("github/copilot.vim")
-
-      -- snippets
-      use("L3MON4D3/LuaSnip") --snippet engine
-      use("rafamadriz/friendly-snippets") -- a bunch of snippets to use
 
       -- LSP
       use("neovim/nvim-lspconfig")
-      use("williamboman/nvim-lsp-installer") -- simple to use language server installer
+      use("j-hui/fidget.nvim")
 
       -- Git
-      use({ "TimUntersberger/neogit", requires = "nvim-lua/plenary.nvim" })
-      use({ "sindrets/diffview.nvim", requires = "nvim-lua/plenary.nvim" })
       use({ "lewis6991/gitsigns.nvim", requires = "nvim-lua/plenary.nvim" })
+      use("tpope/vim-fugitive")
 
       -- Telescope
       use("nvim-telescope/telescope.nvim")
@@ -45,14 +37,9 @@ local plugins = function(use)
       use("akinsho/toggleterm.nvim")
       use("lukas-reineke/indent-blankline.nvim")
       use("folke/trouble.nvim")
-      use("jose-elias-alvarez/null-ls.nvim")
 
       -- Colorschemes
       use("dracula/vim")
-
-      -- Unsure if i"ll keep it
-      use("windwp/nvim-autopairs")
-      use("j-hui/fidget.nvim")
 
       -- Markdown
       use({

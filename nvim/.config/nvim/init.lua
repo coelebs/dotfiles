@@ -8,11 +8,8 @@ require("user.treesitter")
 require("user.telescope")
 require("user.nvimtree")
 require("user.toggleterm")
-require("user.autopairs")
 require("user.fidget")
-require("user.trouble")
 require("user.functions")
-require("user.null-ls")
 
 vim.cmd [[
 let g:vimwiki_list = [{'path': '~/projects/wiki/',

@@ -10,7 +10,7 @@ nnoremap("<leader>gr", ":Gitsigns reset_hunk<cr>")
 nnoremap("<leader>gR", ":Gitsigns reset_buffer<cr>")
 
 nnoremap("<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
-nnoremap("<leader>ff", ":Telescope find_files<cr>")
+nnoremap("<leader>ff", ":Telescope git_files<cr>")
 nnoremap("<leader>fg", ":Telescope live_grep<cr>")
 nnoremap("<leader>fb", require("telescope.builtin").buffers)
 nnoremap("<leader>fh", require("telescope.builtin").help_tags)

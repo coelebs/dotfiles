@@ -64,6 +64,9 @@ local plugins = function(use)
       -- use({"dhruvasagar/vim-table-mode"})
 
       use("vimwiki/vimwiki")
+
+      use("christoomey/vim-tmux-navigator")
+      use("ThePrimeagen/harpoon")
   end
 
 

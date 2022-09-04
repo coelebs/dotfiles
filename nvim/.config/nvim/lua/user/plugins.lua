@@ -54,6 +54,11 @@ local plugins = function(use)
 
       use("christoomey/vim-tmux-navigator")
       use("ThePrimeagen/harpoon")
+
+      --debugger
+      use("mfussenegger/nvim-dap")
+      use("theHamsta/nvim-dap-virtual-text")
+      use("rcarriga/nvim-dap-ui")
   end
 
 

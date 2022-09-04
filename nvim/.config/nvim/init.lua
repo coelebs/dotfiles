@@ -10,6 +10,7 @@ require("user.nvimtree")
 require("user.toggleterm")
 require("user.fidget")
 require("user.functions")
+require("user.debuggers")
 
 vim.cmd [[
 let g:vimwiki_list = [{'path': '~/projects/wiki/',

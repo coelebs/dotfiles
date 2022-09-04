@@ -2,7 +2,7 @@ local nnoremap = require("user.keymaps").nnoremap
 
 vim.g.mapleader = " "
 
-nnoremap("<leader>gg", ":Neogit<cr>")
+nnoremap("<leader>gg", ":Git<cr>")
 nnoremap("<leader>gd", ":Gitsigns preview_hunk<cr>")
 nnoremap("<leader>gs", ":Gitsigns stage_hunk<cr>")
 nnoremap("<leader>gS", ":Gitsigns stage_buffer<cr>")

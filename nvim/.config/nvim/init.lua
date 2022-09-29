@@ -25,3 +25,10 @@ vim.api.nvim_create_autocmd({"BufWritePre"}, {
     command = "%s/\\s\\+$//e",
 })
 require("indent_blankline").setup {}
+
+require("null-ls").setup({
+    sources = {
+      require("null-ls").builtins.code_actions.shellcheck,
+      require("null-ls").builtins.diagnostics.shellcheck,
+    },
+})

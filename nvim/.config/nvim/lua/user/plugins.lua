@@ -40,6 +40,8 @@ local plugins = function(use)
 
       -- Colorschemes
       use("dracula/vim")
+      use({ "catppuccin/nvim", as = "catppuccin" })
+      use("morhetz/gruvbox")
 
       -- Markdown
       use({
@@ -52,13 +54,40 @@ local plugins = function(use)
 
       use("vimwiki/vimwiki")
 
-      use("christoomey/vim-tmux-navigator")
       use("ThePrimeagen/harpoon")
 
       --debugger
       use("mfussenegger/nvim-dap")
       use("theHamsta/nvim-dap-virtual-text")
       use("rcarriga/nvim-dap-ui")
+
+      use("mbbill/undotree")
+
+      use("jose-elias-alvarez/null-ls.nvim")
+      use({
+          "ThePrimeagen/refactoring.nvim",
+          requires = {
+            {"nvim-lua/plenary.nvim"},
+            {"nvim-treesitter/nvim-treesitter"}
+          }
+      })
+
+
+
+      use({
+        'pwntester/octo.nvim',
+        requires = {
+          'nvim-lua/plenary.nvim',
+          'nvim-telescope/telescope.nvim',
+          'kyazdani42/nvim-web-devicons',
+        },
+        config = function ()
+          require"octo".setup()
+        end
+      })
+
+      --temporary
+      use("takac/vim-hardtime")
   end
 
 

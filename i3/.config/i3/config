@@ -49,7 +49,9 @@ bindsym $mod+Shift+Pause exec swaymsg output DP-3 disable
     bindsym $mod+Return exec $term
     bindsym $mod+p exec playerctl play-pause
 
-    bindsym $mod+t exec grim -g "$(slurp)" /tmp/screenshot.png
+    bindsym $mod+t exec scrot -s /tmp/screenshot.png
+
+    bindsym Mod4+l exec mate-screensaver -l
 
     # Kill focused window
     bindsym $mod+Shift+c kill

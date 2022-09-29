@@ -16,27 +16,31 @@ end
 local nnoremap = require("user.keymaps").nnoremap
 vim.g.mapleader = " "
 
-nnoremap("<leader>dc", function()
-  dap.continue()
+nnoremap("<F6>", function()
+  dapui.toggle()
 end);
 
-nnoremap("<leader>db", function()
+nnoremap("<F7>", function()
   dap.toggle_breakpoint()
 end);
 
-nnoremap("<leader>dss", function()
+nnoremap("<F8>", function()
+  dap.continue()
+end);
+
+nnoremap("<F9>", function()
   dap.step_over()
 end);
 
-nnoremap("<leader>dsi", function()
+nnoremap("<F10>", function()
   dap.step_into()
 end);
 
-nnoremap("<leader>dso", function()
+nnoremap("<F11>", function()
   dap.step_out()
 end);
 
-nnoremap("<leader>drc", function()
+nnoremap("<F12>", function()
   dap.run_to_cursor()
 end);
 

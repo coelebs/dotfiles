@@ -51,8 +51,6 @@ bindsym $mod+Shift+Pause exec swaymsg output DP-3 disable
 
     bindsym $mod+t exec scrot -s /tmp/screenshot.png
 
-    bindsym Mod4+l exec mate-screensaver -l
-
     # Kill focused window
     bindsym $mod+Shift+c kill
 
@@ -69,13 +67,10 @@ bindsym $mod+Shift+Pause exec swaymsg output DP-3 disable
 
     # Reload the configuration file
     bindsym $mod+Shift+r reload
-
-    # Exit sway (logs you out of your Wayland session)
-    bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
-    bindsym $mod+Shift+q exec swaynag -t warning -m 'You pressed the shutdown shortcut. Do you really want to shutdown?' -B 'Yes, shutdown' 'systemctl poweroff'
 #
 # Moving around:
 #
+
     # Move your focus around
     bindsym $mod+$left focus left
     bindsym $mod+$down focus down
@@ -173,3 +168,7 @@ default_floating_border pixel 3
 
 exec nm-applet
 exec blueman-applet
+
+# swap caps lock and escape
+exec_always --no-startup-id xmodmap -e "clear lock"
+exec_always --no-startup-id xmodmap -e "keycode 66 = Escape NoSymbol Escape"

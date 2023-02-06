@@ -16,6 +16,7 @@ export GOPATH="$HOME/local/go/"
 export PATH="$GOPATH/bin:$PATH:$HOME/local/bin:/usr/bin/vendor_perl/:$HOME/.local/bin/:$HOME/local/go/bin/"
 export EDITOR="nvim"
 export TERMINAL="alacritty"
+export CONTPAT="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"
 
 bindkey -s ^f "tmux-sessionizer\n"
 

@@ -3,6 +3,7 @@
 # Copy this to ~/.config/sway/config and edit it to your liking.
 #
 # Read `man 5 sway` for a complete reference.
+# i3 config file (v4)
 
 ### Variables
 #
@@ -28,6 +29,7 @@ set $menu rofi -show run
 exec_always setrandom -l -m scale /volume1/foto/2021/JPG/
 #
 # Example configuration:
+#font pango:Terminus 11px
 #
 #   output HDMI-A-1 resolution 1920x1080 position 1920,0
 #

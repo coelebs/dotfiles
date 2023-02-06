@@ -62,6 +62,13 @@ dap.configurations.cpp = {
         stopOnEntry = true,
         args = {},
     },
+    {
+        name = "Remote attach",
+        type = "lldb",
+        request = "custom",
+        targetCreateCommands = {"target create ${workspaceFolder}/devices/main/update/update"},
+        processCreateCommands = {"gdb-remote 192.168.137.230:1234"},
+    },
 }
 
 daptext.setup()

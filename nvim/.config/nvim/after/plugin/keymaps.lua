@@ -21,6 +21,7 @@ nnoremap("<leader>rg", ":Telescope live_grep<cr>")
 nnoremap("<leader>fb", require("telescope.builtin").buffers)
 nnoremap("<leader>fh", require("telescope.builtin").help_tags)
 nnoremap("<leader>fr", require("telescope.builtin").lsp_references)
+nnoremap("<leader>fs", require("telescope.builtin").git_status)
 
 nnoremap("<leader>ud", ":UndotreeToggle<cr>")
 

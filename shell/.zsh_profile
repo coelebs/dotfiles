@@ -20,5 +20,6 @@ export TERMINAL="alacritty"
 bindkey -s ^f "tmux-sessionizer\n"
 
 setopt no_hist_verify
+source "$HOME/.cargo/env"
 
 eval $(starship init zsh)

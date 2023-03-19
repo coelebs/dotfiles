@@ -34,10 +34,15 @@ end
 require('lspconfig')['clangd'].setup{
     on_attach = on_attach,
     flags = lsp_flags,
-    cmd = {"clangd-16"},
+    cmd = {"clangd"},
 }
 
 require('lspconfig')['gopls'].setup{
+    on_attach = on_attach,
+    flags = lsp_flags,
+}
+
+require('lspconfig')['rust_analyzer'].setup{
     on_attach = on_attach,
     flags = lsp_flags,
 }

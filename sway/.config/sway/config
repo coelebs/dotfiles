@@ -33,14 +33,14 @@ exec_always setrandom -l -m scale /volume1/foto/2021/JPG/
 #
 # Example configuration:
 #
-#   output HDMI-A-1 resolution 1920x1080 position 1920,0
+#   output DP-2 resolution 1920x1080 position 1920,0
 #
 # You can get the names of your outputs by running: swaymsg -t get_outputs
-#output DP-3 resolution 3840x2160 position 0,0
-#output HDMI-A-1 resolution 2560x1440 position 3840,0 transform 90
+output DP-3 resolution 3840x2160 position 0,0
+output DP-2 resolution 2560x1440 position 3840,0
 
-bindsym $mod+Next  exec swaymsg output HDMI-A-1 transform 90
-bindsym $mod+Prior exec swaymsg output HDMI-A-1 transform  0
+bindsym $mod+Next  exec swaymsg output DP-2 transform 90
+bindsym $mod+Prior exec swaymsg output DP-2 transform  0
 
 bindsym $mod+Pause       exec swaymsg output DP-3 enable
 bindsym $mod+Shift+Pause exec swaymsg output DP-3 disable
@@ -50,10 +50,7 @@ bindsym $mod+Shift+Pause exec swaymsg output DP-3 disable
 # Basics:
 #
     # Start a terminal
-    bindsym $mod+Return exec $term
-    bindsym $mod+p exec playerctl play-pause
-
-    bindsym $mod+t exec grim -g "$(slurp)" /tmp/screenshot.png
+    bindsym $mod+Space exec $term
 
     # Kill focused window
     bindsym $mod+Shift+c kill
@@ -70,11 +67,7 @@ bindsym $mod+Shift+Pause exec swaymsg output DP-3 disable
     floating_modifier $mod normal
 
     # Reload the configuration file
-    bindsym $mod+Shift+r reload
-
-    # Exit sway (logs you out of your Wayland session)
-    bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
-    bindsym $mod+Shift+q exec swaynag -t warning -m 'You pressed the shutdown shortcut. Do you really want to shutdown?' -B 'Yes, shutdown' 'systemctl poweroff'
+    bindsym $mod+Shift+g reload
 #
 # Moving around:
 #
@@ -113,6 +106,18 @@ bindsym $mod+Shift+Pause exec swaymsg output DP-3 disable
     bindsym $mod+8 workspace 8
     bindsym $mod+9 workspace 9
     bindsym $mod+0 workspace 10
+
+    bindsym $mod+q workspace 1
+    bindsym $mod+w workspace 2
+    bindsym $mod+e workspace 3
+    bindsym $mod+r workspace 4
+    bindsym $mod+t workspace 5
+    bindsym $mod+y workspace 6
+    bindsym $mod+u workspace 7
+    bindsym $mod+i workspace 8
+    bindsym $mod+o workspace 9
+    bindsym $mod+p workspace 10
+
     # Move focused container to workspace
     bindsym $mod+Shift+1 move container to workspace 1
     bindsym $mod+Shift+2 move container to workspace 2
@@ -124,6 +129,18 @@ bindsym $mod+Shift+Pause exec swaymsg output DP-3 disable
     bindsym $mod+Shift+8 move container to workspace 8
     bindsym $mod+Shift+9 move container to workspace 9
     bindsym $mod+Shift+0 move container to workspace 10
+
+    bindsym $mod+Shift+q move container to workspace 1
+    bindsym $mod+Shift+w move container to workspace 2
+    bindsym $mod+Shift+e move container to workspace 3
+    bindsym $mod+Shift+r move container to workspace 4
+    bindsym $mod+Shift+t move container to workspace 5
+    bindsym $mod+Shift+y move container to workspace 6
+    bindsym $mod+Shift+u move container to workspace 7
+    bindsym $mod+Shift+i move container to workspace 8
+    bindsym $mod+Shift+o move container to workspace 9
+    bindsym $mod+Shift+p move container to workspace 10
+
     # Note: workspaces can have any name you want, not just numbers.
     # We just use 1-10 as the default.
 
@@ -139,19 +156,11 @@ bindsym $mod+Shift+Pause exec swaymsg output DP-3 disable
     bindsym $mod+b splith
     bindsym $mod+v splitv
 
-    # Switch the current container between different layout styles
-    bindsym $mod+s layout stacking
-    bindsym $mod+w layout tabbed
-    bindsym $mod+e layout toggle split
-
     # Make the current focus fullscreen
     bindsym $mod+f fullscreen
 
     # Toggle the current focus between tiling and floating mode
     bindsym $mod+Shift+space floating toggle
-
-    # Swap focus between the tiling area and the floating area
-    bindsym $mod+space focus mode_toggle
 
     # Move focus to the parent container
     bindsym $mod+a focus parent

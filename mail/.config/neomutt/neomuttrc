@@ -19,6 +19,7 @@ set nm_default_uri = "notmuch://$HOME/local/mail/"
 set virtual_spoolfile=yes
 virtual-mailboxes "this year" "notmuch://?query=date:\"365d..now\""
 virtual-mailboxes "all" "notmuch://?query=tag:inbox"
+virtual-mailboxes "this year" "notmuch://?query=tag:inbox AND date:\"365d..now\""
 virtual-mailboxes "sent" "notmuch://?query=from:vincent@kriek.org"
 
 set sidebar_visible=true

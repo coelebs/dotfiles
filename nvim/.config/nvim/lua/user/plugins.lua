@@ -86,6 +86,8 @@ local plugins = function(use)
         end
       })
 
+      use("github/copilot.vim")
+
       --temporary
       use("takac/vim-hardtime")
   end

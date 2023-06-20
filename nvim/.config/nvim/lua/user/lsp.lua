@@ -34,7 +34,7 @@ end
 require('lspconfig')['clangd'].setup{
     on_attach = on_attach,
     flags = lsp_flags,
-    cmd = {"clangd"},
+    cmd = {"clangd", "--query-driver=*"},
 }
 
 require('lspconfig')['gopls'].setup{

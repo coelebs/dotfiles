@@ -44,34 +44,45 @@ nnoremap("<F12>", function()
   dap.run_to_cursor()
 end);
 
-dap.adapters.lldb = {
+dap.adapters.cppdbg = {
     type = 'executable',
-    command = '/usr/bin/lldb-vscode-10', -- adjust as needed, must be absolute path
-    name = 'lldb'
+    command = '/home/vin/local/tools/extension/debugAdapters/bin/OpenDebugAD7',
+    name = 'cppdbg'
 }
 
-dap.configurations.cpp = {
-    {
-        name = 'Launch',
-        type = 'lldb',
-        request = 'launch',
-        program = function()
-            return vim.fn.input('Path to executable: ', vim.loop.cwd() .. '/', 'file')
-        end,
-        cwd = '${workspaceFolder}',
-        stopOnEntry = true,
-        args = {},
+dap.adapters.cdbg = {
+    type = 'executable',
+    command = '/home/vin/local/tools/extension/debugAdapters/bin/OpenDebugAD7',
+    name = 'cdbg'
+}
+
+dap.configurations.c = {
+  {
+    name = "Debug J-Link",
+    type = "cdbg",
+    request = "launch",
+    cwd = "/home/vin/projects/emb4/EMB-23-Update-the-motor/main/",
+    program = "/home/vin/projects/emb4/EMB-23-Update-the-motor/build/zephyr/zephyr.elf",
+    stopAtEntry = false,
+    MIMode = "gdb",
+    miDebuggerServerAddress = "localhost:2331",
+    miDebuggerPath = "/opt/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-gdb",
+    serverLaunchTimeout = 5000,
+    postRemoteConnectCommands = {
+        {
+            text = "monitor reset",
+            ignoreFailures = false
+        },
+        {
+            text = "load",
+            ignoreFailures = false
+        },
     },
-    {
-        name = "Remote attach",
-        type = "lldb",
-        request = "custom",
-        targetCreateCommands = {"target create ${workspaceFolder}/devices/main/update/update"},
-        processCreateCommands = {"gdb-remote 192.168.137.230:1234"},
-    },
+  }
 }
 
 daptext.setup()
 dapui.setup({
 
 })
+

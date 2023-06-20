@@ -124,6 +124,8 @@ bindsym $mod+Shift+Pause exec swaymsg output DP-3 disable
 
     bindsym $mod+Shift+f move workspace to output right
     bindsym $mod+Shift+d move workspace to output left
+    bindsym $mod+Shift+t move workspace to output up
+    bindsym $mod+Shift+y move workspace to output down
 
 #
 # Layout stuff:

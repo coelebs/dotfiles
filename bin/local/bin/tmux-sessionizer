@@ -11,7 +11,7 @@ if [[ -z $selected ]]; then
 fi
 
 worktreename=$(basename "$(dirname "$selected")")
-selected_name="${worktreename:0:2}/$(basename "$selected" | tr . _)"
+selected_name="${worktreename:0:4}/$(basename "$selected" | tr . _)"
 tmux_running=$(pgrep tmux)
 
 if [ ! "$tmux_running" ]; then

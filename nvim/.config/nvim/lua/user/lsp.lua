@@ -19,7 +19,8 @@ local function on_attach(client, bufnr)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>ef", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>ej", '<cmd>lua vim.diagnostic.goto_next({ border = "rounded" })<CR>', opts)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>ek", '<cmd>lua vim.diagnostic.goto_prev({ border = "rounded" })<CR>', opts)
-	vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>fl", "<cmd>lua require('telescope.builtin').lsp_dynamic_workspace_symbols()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>fws", "<cmd>lua require('telescope.builtin').lsp_dynamic_workspace_symbols()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>fds", "<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>", opts)
 	vim.api.nvim_buf_set_keymap(
 	bufnr,
 	"n",

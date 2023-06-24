@@ -19,6 +19,8 @@ local plugins = function(use)
       use("hrsh7th/cmp-nvim-lsp")
 
       -- LSP
+      use("williamboman/mason.nvim")
+      use("williamboman/mason-lspconfig.nvim")
       use("neovim/nvim-lspconfig")
       use("j-hui/fidget.nvim")
 
@@ -72,24 +74,12 @@ local plugins = function(use)
           }
       })
 
-
-
-      use({
-        'pwntester/octo.nvim',
-        requires = {
-          'nvim-lua/plenary.nvim',
-          'nvim-telescope/telescope.nvim',
-          'kyazdani42/nvim-web-devicons',
-        },
-        config = function ()
-          require"octo".setup()
-        end
-      })
+      use {
+        'nvim-lualine/lualine.nvim',
+        requires = { 'nvim-tree/nvim-web-devicons', opt = true }
+      }
 
       use("github/copilot.vim")
-
-      --temporary
-      use("takac/vim-hardtime")
   end
 
 

@@ -25,6 +25,7 @@ nnoremap("<F7>", function()
 end);
 
 nnoremap("<F8>", function()
+  vim.cmd(":make")
   dap.continue()
 end);
 

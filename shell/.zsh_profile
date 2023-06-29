@@ -23,5 +23,4 @@ setopt no_hist_verify
 source "$HOME/.cargo/env"
 
 eval $(starship init zsh)
-
-export ZEPHYR_BASE=/home/vin/zephyr_stm32/zephyr
+eval "$(direnv hook zsh)"

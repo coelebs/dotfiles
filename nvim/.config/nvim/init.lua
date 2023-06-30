@@ -30,6 +30,7 @@ vim.opt.completeopt    = {"menu", "menuone", "noselect"}
 vim.opt.numberwidth    = 5
 vim.opt.relativenumber = true
 vim.opt.guicursor = ""
+vim.opt.termguicolors = true
 
 vim.opt.cpoptions:append("$")  -- Append dollar sign instead of removing the word, thanks Derek Wyatt
 vim.opt.undofile = true
@@ -47,6 +48,30 @@ vim.keymap.set("n", "<C-j>", ":cnext<cr>zz")
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
+
+function build(run)
+  require("notify")("Building...", "info", {title = "Build"})
+  vim.fn.jobstart({"build.sh"}, {
+    stdout_buffered = true,
+    on_stdout = function(_, data)
+      vim.fn.setqflist(data, "r")
+    end,
+    on_exit = function(_, code)
+      if code ~= 0 then
+        require("notify")("Build failed", "error", {title = "Build"})
+      elseif run then
+        require("notify")("Starting debugger after build", "info", {title = "Build"})
+        require("dap").terminate()
+        require("dap").continue()
+      else
+        require("notify")("Build succeeded", "info", {title = "Build"})
+      end
+    end
+  })
+end
+
+vim.keymap.set("n", "<leader>bb", function() build(false) end)
+vim.keymap.set("n", "<leader>bs", function() build(true) end)
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then

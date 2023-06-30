@@ -1,4 +1,5 @@
 return {
+  {
   "neovim/nvim-lspconfig",
   config = function()
     local function on_attach(client, bufnr)
@@ -50,4 +51,12 @@ return {
       flags = lsp_flags,
     }
   end
+  },
+  {
+    "williamboman/mason.nvim",
+    config = function()
+      require("mason").setup()
+    end,
+    build = ":MasonUpdate" -- :MasonUpdate updates registry contents
+  },
 }

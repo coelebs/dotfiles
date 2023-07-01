@@ -9,6 +9,7 @@ return {
     {"<F10>", function() require("dap").step_into() end},
     {"<F11>", function() require("dap").step_out() end},
     {"<F12>", function() require("dap").run_to_cursor() end},
+    {"<Leader>dbc", function() require("dap").run_to_cursor() end},
   },
   config = function()
     require("dap").adapters.cppdbg = {

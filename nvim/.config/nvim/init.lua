@@ -48,6 +48,10 @@ vim.keymap.set("n", "<C-j>", ":cnext<cr>zz")
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
+vim.keymap.set("n", "<C-b>", function()
+  vim.cmd("<cmd>silent !tmux neww -n notes nvim ~/local/notes.md<CR>")
+end
+)
 
 function build(run)
   require("notify")("Building...", "info", {title = "Build"})
@@ -61,8 +65,8 @@ function build(run)
         require("notify")("Build failed", "error", {title = "Build"})
       elseif run then
         require("notify")("Starting debugger after build", "info", {title = "Build"})
-        require("dap").terminate()
-        require("dap").continue()
+        require("dap").close()
+        require("dap").run()
       else
         require("notify")("Build succeeded", "info", {title = "Build"})
       end

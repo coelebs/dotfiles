@@ -18,6 +18,7 @@ export EDITOR="nvim"
 export TERMINAL="alacritty"
 
 bindkey -s ^f "tmux-sessionizer\n"
+bindkey -s ^b "nvim ~/local/notes.md\n"
 
 setopt no_hist_verify
 source "$HOME/.cargo/env"

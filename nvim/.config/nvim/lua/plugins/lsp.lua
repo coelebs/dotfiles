@@ -1,7 +1,11 @@
 return {
   {
   "neovim/nvim-lspconfig",
+  dependencies = {"williamboman/mason-lspconfig.nvim", "williamboman/mason.nvim"},
+  build = ":MasonUpdate", -- :MasonUpdate updates registry contents
   config = function()
+    require("mason").setup()
+    require("mason-lspconfig").setup()
     local function on_attach(client, bufnr)
       local opts = { noremap = true, silent = true }
       vim.api.nvim_buf_set_keymap(bufnr, "n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
@@ -30,33 +34,22 @@ return {
       vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting()' ]]
     end
 
-    require('lspconfig')['clangd'].setup{
-      on_attach = on_attach,
-      flags = lsp_flags,
-      cmd = {"clangd", "--query-driver=*"},
-    }
+    require("mason-lspconfig").setup_handlers({
+      function(server_name)
+        require('lspconfig')[server_name].setup{
+          on_attach = on_attach,
+          flags = lsp_flags,
+        }
+      end,
 
-    require('lspconfig')['gopls'].setup{
-      on_attach = on_attach,
-      flags = lsp_flags,
-    }
-
-    require('lspconfig')['rust_analyzer'].setup{
-      on_attach = on_attach,
-      flags = lsp_flags,
-    }
-
-    require('lspconfig')['pyright'].setup{
-      on_attach = on_attach,
-      flags = lsp_flags,
-    }
+    ["clangd"] = function()
+      require('lspconfig')['clangd'].setup{
+        on_attach = on_attach,
+        flags = lsp_flags,
+        cmd = {"clangd", "--query-driver=*"},
+      }
+    end
+    })
   end
-  },
-  {
-    "williamboman/mason.nvim",
-    config = function()
-      require("mason").setup()
-    end,
-    build = ":MasonUpdate" -- :MasonUpdate updates registry contents
   },
 }

@@ -46,7 +46,7 @@ return {
       require('lspconfig')['clangd'].setup{
         on_attach = on_attach,
         flags = lsp_flags,
-        cmd = {"clangd", "--query-driver=*"},
+        cmd = {"clangd", "--query-driver=*", "--offset-encoding=utf-16"},
       }
     end
     })

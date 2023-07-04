@@ -61,5 +61,10 @@ return {
     keys = {
       {"<leader>gg", ":Git<cr>"},
     },
+  },
+  {
+    "ruifm/gitlinker.nvim",
+    dependencies = "nvim-lua/plenary.nvim",
+    opts = {},
   }
 }

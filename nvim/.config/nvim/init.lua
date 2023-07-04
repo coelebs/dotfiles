@@ -3,7 +3,6 @@ let g:vimwiki_list = [{'path': '~/projects/wiki/',
                       \ 'syntax': 'markdown', 'ext': '.md'}]
 set makeprg=build.sh
 ]]
-
 local coelebsgroup = vim.api.nvim_create_augroup('coelebsgroup',  {})
 vim.api.nvim_create_autocmd({"BufWritePre"}, {
     group = coelebsgroup,
@@ -53,8 +52,11 @@ vim.keymap.set("n", "<C-b>", function()
 end
 )
 
+job1 = nil
+
 function build(run)
   require("notify")("Building...", "info", {title = "Build"})
+
   vim.fn.jobstart({"build.sh"}, {
     stdout_buffered = true,
     on_stdout = function(_, data)
@@ -65,8 +67,12 @@ function build(run)
         require("notify")("Build failed", "error", {title = "Build"})
       elseif run then
         require("notify")("Starting debugger after build", "info", {title = "Build"})
+        if job1 then
+          vim.fn.jobstop(job1)
+        end
+        job1 = vim.fn.jobstart({"debug.sh"})
         require("dap").close()
-        require("dap").run()
+        require("dap").continue()
       else
         require("notify")("Build succeeded", "info", {title = "Build"})
       end

@@ -61,6 +61,7 @@ return {
     keys = {
       {"<leader>gg", ":Git<cr>"},
     },
+    cmd = "Gedit",
   },
   {
     "ruifm/gitlinker.nvim",

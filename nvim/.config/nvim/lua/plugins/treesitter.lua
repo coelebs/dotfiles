@@ -2,7 +2,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     config = function()
         require("nvim-treesitter.configs").setup({
-          ensure_installed = {"bash", "go", "python", "c", "cpp", "cmake", "dockerfile", "lua", "toml", "yaml", "devicetree", "git_rebase"},
+          ensure_installed = {"bash", "go", "python", "c", "cpp", "cmake", "dockerfile", "lua", "toml", "yaml", "devicetree", "git_rebase", "bitbake"},
           auto_install = true,
         })
       end,

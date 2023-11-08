@@ -12,6 +12,9 @@ fi
 ##Disable system bell
 setopt nobeep
 
+##Disable the builtin time
+disable -r time
+
 export GOPATH="$HOME/local/go/"
 export PATH="$GOPATH/bin:$PATH:$HOME/local/bin:/usr/bin/vendor_perl/:$HOME/.local/bin/:$HOME/local/go/bin/"
 export EDITOR="nvim"
@@ -21,7 +24,6 @@ bindkey -s ^f "tmux-sessionizer\n"
 bindkey -s ^b "nvim ~/local/notes.md\n"
 
 setopt no_hist_verify
-source "$HOME/.cargo/env"
 
 eval $(starship init zsh)
 eval "$(direnv hook zsh)"

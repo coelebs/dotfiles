@@ -1,6 +1,8 @@
 alias ls='ls --color -lh --group-directories-first'
 alias vim='nvim'
 
+alias cdh='cd $(git rev-parse --show-toplevel)'
+
 #to unpack files
 extract () {
 		if [ -f $1 ] ; then

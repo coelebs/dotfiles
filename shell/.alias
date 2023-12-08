@@ -2,6 +2,7 @@ alias ls='ls --color -lh --group-directories-first'
 alias vim='nvim'
 
 alias cdh='cd $(git rev-parse --show-toplevel)'
+alias cdhh='cd $(git rev-parse --show-superproject-working-tree)'
 
 #to unpack files
 extract () {
@@ -32,4 +33,26 @@ function .. (){
     cd .. >&/dev/null;
     arg=$(($arg - 1));
   done
+}
+
+function geturl() {
+  FULLPATH="$1"
+  IP=$(hostname -I | cut -d " " -f 1)
+
+  case $FULLPATH in
+    "/srv/ftp/"*)
+        RELPATH=${FULLPATH/\/srv\/ftp}
+        echo "ftp://$IP$RELPATH"
+        echo "ftp://$IP$RELPATH" | xclip
+        ;;
+    "/srv/http/"*)
+        RELPATH=${FULLPATH/\/srv\/ftp}
+        echo "http://$IP$RELPATH"
+        echo "http://$IP$RELPATH" | xclip
+        ;;
+    *)
+        cp $FULLPATH /srv/ftp/auto/
+        geturl /srv/ftp/auto/$(basename $FULLPATH)
+        ;;
+  esac
 }

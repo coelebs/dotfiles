@@ -27,3 +27,7 @@ setopt no_hist_verify
 
 eval $(starship init zsh)
 eval "$(direnv hook zsh)"
+
+if [ -f ~/.cargo/env ]; then
+  . ~/.cargo/env
+fi

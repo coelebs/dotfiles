@@ -45,3 +45,6 @@ return {
   end
   },
 }
+
+-- For issues with finding standard headers see: https://github.com/clangd/clangd/issues/1394#issuecomment-1328676884
+-- I solved it by installing g++-12

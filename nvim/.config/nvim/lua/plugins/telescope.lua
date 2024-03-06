@@ -8,8 +8,8 @@ return {
 	     {"<leader>rg", ":Telescope live_grep<cr>"},
 	     {"<leader>fb", function() require("telescope.builtin").buffers() end},
 	     {"<leader>fh", function() require("telescope.builtin").help_tags() end},
-	     {"<leader>fr", function() require("telescope.builtin").lsp_references() end},
 	     {"<leader>fs", function() require("telescope.builtin").git_status() end},
+         {"<leader>fr", function() require("telescope.builtin").resume() end},
     },
     config = function()
       require("telescope").setup{

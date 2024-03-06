@@ -41,14 +41,6 @@ return {
           flags = lsp_flags,
         }
       end,
-
-    ["clangd"] = function()
-      require('lspconfig')['clangd'].setup{
-        on_attach = on_attach,
-        flags = lsp_flags,
-        cmd = {"clangd", "--query-driver=*", "--offset-encoding=utf-16"},
-      }
-    end
     })
   end
   },

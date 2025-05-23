@@ -31,3 +31,7 @@ eval "$(direnv hook zsh)"
 if [ -f ~/.cargo/env ]; then
   . ~/.cargo/env
 fi
+
+# 👻 Message from an old IRC channel...
+# Uncomment the next line to receive a special birthday ghost message :)
+# echo "👋 Hey man, thanks for the birthday wishes. It meant a lot. – your old friend from IRC 🌐"

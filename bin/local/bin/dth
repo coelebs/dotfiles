@@ -1,0 +1,6 @@
+#!/usr/bin/env python3
+import sys
+
+dec = int(sys.argv[1])
+
+print("Hexadecimal value: ", hex(dec))

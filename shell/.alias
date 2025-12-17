@@ -1,8 +1,12 @@
 alias ls='ls --color -lh --group-directories-first'
 alias vim='nvim'
+alias log='nvim + ~/local/notes/log.md'
 
 alias cdh='cd $(git rev-parse --show-toplevel)'
-alias cdhh='cd $(git rev-parse --show-superproject-working-tree)'
+alias cdhh='cd $(git rev-parse --show-superproject-working-tree || $PWD)'
+
+alias cat='batcat --paging=never -p'
+alias abv='python ./ares-build-agent/run-build-agent.py -I vin-build-agent'
 
 #to unpack files
 extract () {
@@ -43,12 +47,8 @@ function geturl() {
     "/srv/ftp/"*)
         RELPATH=${FULLPATH/\/srv\/ftp}
         echo "ftp://$IP$RELPATH"
-        echo "ftp://$IP$RELPATH" | xclip
-        ;;
-    "/srv/http/"*)
-        RELPATH=${FULLPATH/\/srv\/ftp}
         echo "http://$IP$RELPATH"
-        echo "http://$IP$RELPATH" | xclip
+        echo "ftp://$IP$RELPATH" | xclip
         ;;
     *)
         cp $FULLPATH /srv/ftp/auto/
@@ -56,3 +56,13 @@ function geturl() {
         ;;
   esac
 }
+
+function dtb2dts() {
+  local dtb=$1
+  local dts=$2
+
+  dtc -I dtb -O dts -o "${dts}" "${dtb}"
+}
+
+alias lscp="scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+alias lssh="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"

@@ -1,6 +1,6 @@
 # history specification
 export HISTSIZE=2000
-export HISTFILE="$HOME/.history"
+export HISTFILE="$HOME/.bash_history"
 export SAVEHIST=$HISTSIZE
 setopt hist_ignore_all_dups
 
@@ -15,8 +15,7 @@ setopt nobeep
 ##Disable the builtin time
 disable -r time
 
-export GOPATH="$HOME/local/go/"
-export PATH="$GOPATH/bin:$PATH:$HOME/local/bin:/usr/bin/vendor_perl/:$HOME/.local/bin/:$HOME/local/go/bin/"
+export PATH="$PATH:$HOME/local/bin:/usr/bin/vendor_perl/:$HOME/.local/bin/:$HOME/local/go/bin/"
 export EDITOR="nvim"
 export TERMINAL="alacritty"
 
@@ -25,9 +24,16 @@ bindkey -s ^b "nvim ~/local/notes.md\n"
 
 setopt no_hist_verify
 
-eval $(starship init zsh)
+eval "$(starship init zsh)"
 eval "$(direnv hook zsh)"
 
 if [ -f ~/.cargo/env ]; then
   . ~/.cargo/env
 fi
+
+if [ -f /usr/local/go/bin/go ]; then
+  export PATH="/usr/local/go/bin/:$PATH"
+fi
+
+eval $(ssh-agent)
+ssh-add

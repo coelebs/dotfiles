@@ -37,9 +37,12 @@ exec_always setrandom -l -m scale /volume1/foto/2021/JPG/
 #output DP-3 resolution 3840x2160 position 0,0
 #output HDMI-A-1 resolution 2560x1440 position 3840,0 transform 90
 
-bindsym $mod+i exec $HOME/.screenlayout/work.sh
-bindsym $mod+o exec $HOME/.screenlayout/mobile.sh
-bindsym $mod+p exec $HOME/.screenlayout/home.sh
+bindsym $mod+Shift+i exec $HOME/.screenlayout/work_thijs.sh
+bindsym $mod+Shift+o exec $HOME/.screenlayout/mobile.sh
+bindsym $mod+Shift+p exec $HOME/.screenlayout/home.sh
+bindsym $mod+Shift+u exec xrandr --auto
+
+bindsym $mod+p exec playerctl play-pause
 
 bindsym $mod+Next  exec swaymsg output HDMI-A-1 transform 90
 bindsym $mod+Prior exec swaymsg output HDMI-A-1 transform  0
@@ -47,7 +50,7 @@ bindsym $mod+Prior exec swaymsg output HDMI-A-1 transform  0
 bindsym $mod+Pause       exec swaymsg output DP-3 enable
 bindsym $mod+Shift+Pause exec swaymsg output DP-3 disable
 
-bindsym Mod4+l exec i3lock -c 000000
+bindsym Mod4+l exec i3lock-fancy
 bindsym Mod4+e exec i3-msg exit
 bindsym $mod+Shift+e exec i3-msg exit
 
@@ -58,7 +61,7 @@ bindsym $mod+Shift+e exec i3-msg exit
     # Start a terminal
     bindsym $mod+Return exec $term
 
-    bindsym $mod+t exec scrot -s /tmp/screenshot.png
+    bindsym $mod+t exec flameshot gui
 
     # Kill focused window
     bindsym $mod+Shift+c kill

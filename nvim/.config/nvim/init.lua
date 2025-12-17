@@ -2,8 +2,7 @@ vim.cmd [[
 let g:vimwiki_list = [{'path': '~/projects/wiki/',
                       \ 'syntax': 'markdown', 'ext': '.md'}]
 set makeprg=build.sh
-]]
-local coelebsgroup = vim.api.nvim_create_augroup('coelebsgroup',  {})
+]] local coelebsgroup = vim.api.nvim_create_augroup('coelebsgroup',  {})
 vim.api.nvim_create_autocmd({"BufWritePre"}, {
     group = coelebsgroup,
     pattern = "*",
@@ -36,7 +35,7 @@ vim.opt.undofile = true
 vim.opt.clipboard = "unnamedplus"
 
 vim.g.mapleader = " "
-vim.keymap.set("n", "<leader>ex", ":Ex<cr>")
+vim.keymap.set("n", "<leader>ex", "<cmd>Oil<cr>")
 vim.keymap.set("n", "<leader>qc", ":cclose<cr>")
 vim.keymap.set("n", "<F4>", ":set list!<cr>")
 vim.keymap.set("n", "<F5>", ":set hls!<cr>")
@@ -47,41 +46,11 @@ vim.keymap.set("n", "<C-j>", ":cnext<cr>zz")
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
-vim.keymap.set("n", "<C-b>", function()
-  vim.cmd("<cmd>silent !tmux neww -n notes nvim ~/local/notes.md<CR>")
-end
-)
 
 job1 = nil
 
-function build(run)
-  require("notify")("Building...", "info", {title = "Build"})
-
-  vim.fn.jobstart({"build.sh"}, {
-    stdout_buffered = true,
-    on_stdout = function(_, data)
-      vim.fn.setqflist(data, "r")
-    end,
-    on_exit = function(_, code)
-      if code ~= 0 then
-        require("notify")("Build failed", "error", {title = "Build"})
-      elseif run then
-        require("notify")("Starting debugger after build", "info", {title = "Build"})
-        if job1 then
-          vim.fn.jobstop(job1)
-        end
-        job1 = vim.fn.jobstart({"debug.sh"})
-        require("dap").close()
-        require("dap").continue()
-      else
-        require("notify")("Build succeeded", "info", {title = "Build"})
-      end
-    end
-  })
-end
-
-vim.keymap.set("n", "<leader>bb", function() build(false) end)
-vim.keymap.set("n", "<leader>bs", function() build(true) end)
+vim.keymap.set("n", "<leader>dd", ":r!date<CR>")
+vim.g.markdown_folding = 1
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -96,7 +65,6 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 require("lazy").setup("plugins", opts)
-
 
 vim.filetype.add({
   pattern = {
@@ -114,3 +82,5 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.highlight.on_yank()
   end,
 })
+
+vim.cmd [[colorscheme everforest]]

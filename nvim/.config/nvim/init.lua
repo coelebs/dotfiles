@@ -84,3 +84,5 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 vim.cmd [[colorscheme everforest]]
+
+vim.g.copilot_enterprise_url = "https://alfen.ghe.com"

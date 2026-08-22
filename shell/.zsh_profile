@@ -15,7 +15,7 @@ setopt nobeep
 ##Disable the builtin time
 disable -r time
 
-export PATH="$PATH:$HOME/local/bin:/usr/bin/vendor_perl/:$HOME/.local/bin/:$HOME/local/go/bin/"
+export PATH="$PATH:/usr/bin/vendor_perl/:$HOME/.local/bin/:$HOME/local/go/bin/"
 export EDITOR="nvim"
 export TERMINAL="alacritty"
 

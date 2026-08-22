@@ -5,7 +5,7 @@ alias log='nvim + ~/local/notes/log.md'
 alias cdh='cd $(git rev-parse --show-toplevel)'
 alias cdhh='cd $(git rev-parse --show-superproject-working-tree || $PWD)'
 
-alias cat='batcat --paging=never -p'
+alias cat='bat --paging=never -p'
 alias abv='python ./ares-build-agent/run-build-agent.py -I vin-build-agent'
 
 #to unpack files

@@ -90,6 +90,8 @@ source $ZSH/oh-my-zsh.sh
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
+# Always export CMake compile commands
+export CMAKE_EXPORT_COMPILE_COMMANDS=ON
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -102,3 +104,6 @@ source $ZSH/oh-my-zsh.sh
 
 source ~/.zsh_profile
 
+
+# Added by Teamwork Graph CLI installer
+export PATH="/home/vincent/.local/bin:$PATH"

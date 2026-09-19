@@ -189,6 +189,10 @@ in
     stylua
     xdg-terminal-exec
     starship
+    unzip
+    rapid-photo-downloader
+    tmux
+    fzf
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];

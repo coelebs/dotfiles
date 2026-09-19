@@ -9,6 +9,12 @@ let
     inherit (pkgs) system;
     config.allowUnfree = true;
   };
+
+  opencode-1_18_29 =
+    (builtins.getFlake
+      "github:NixOS/nixpkgs/d91a239ca0118ff10ee22ba54f48929c38ab8114"
+    ).legacyPackages.${pkgs.system}.opencode;
+
   # Use unstable Hyprland for omarchyDesktop helpers (hyprctl, etc.) so they
   # match the running compositor. Omarchy expects >=0.56.2 for the
   # `workspace.special_active` event in default/hypr/qconsole.lua, while
@@ -163,7 +169,7 @@ in
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
     neovim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    opencode
+    opencode-1_18_29
     ghostty
     quickshell
     git

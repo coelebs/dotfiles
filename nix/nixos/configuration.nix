@@ -9,6 +9,11 @@ let
     inherit (pkgs) system;
     config.allowUnfree = true;
   };
+  # Use unstable Hyprland for omarchyDesktop helpers (hyprctl, etc.) so they
+  # match the running compositor. Omarchy expects >=0.56.2 for the
+  # `workspace.special_active` event in default/hypr/qconsole.lua, while
+  # stable pkgs.hyprland is still 0.55.4 which logs a Lua error on startup.
+  omarchyDesktop = pkgs.callPackage /home/vin/Projects/omarchy/default.nix { hyprland = unstable.hyprland; };
 in
 
 {
@@ -78,6 +83,7 @@ in
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
+    wireplumber.enable = true;
     # If you want to use JACK applications, uncomment this
     # jack.enable = true;
   };
@@ -109,8 +115,46 @@ in
   programs.hyprland = {
     enable = true;
     withUWSM = true;
+    # Pin compositor to unstable: Omarchy needs Hyprland >=0.56.2
+    # (`workspace.special_active`), stable is 0.55.4 and emits
+    # `qconsole.lua:156: unknown event "workspace.special_active"`.
+    package = unstable.hyprland;
+    # Keep portal from same unstable set as the compositor to avoid
+    # protocol version skew. Must be set here, not in xdg.portal.extraPortals,
+    # because the module already adds portalPackage to extraPortals itself;
+    # listing it twice causes a duplicate
+    # `xdg-desktop-portal-hyprland.service` symlink collision on rebuild.
+    portalPackage = unstable.xdg-desktop-portal-hyprland;
   };
 
+  # Core system services used by Omarchy's Quickshell desktop.
+  security.polkit.enable = true;
+  security.pam.services.omarchy-lock-password = {};
+  services.upower.enable = true;
+  services.power-profiles-daemon.enable = true;
+  services.udisks2.enable = true;
+  hardware.bluetooth.enable = true;
+
+  # GTK applications, including Firefox, use this desktop color preference.
+  programs.dconf.profiles.user.databases = [
+    {
+      settings."org/gnome/desktop/interface" = {
+        color-scheme = "prefer-dark";
+        gtk-theme = "Adwaita-dark";
+      };
+    }
+  ];
+
+  #TODO move this to the nix-init things
+  environment.sessionVariables.OMARCHY_PATH =
+    "/run/current-system/sw/share/omarchy";
+
+  environment.pathsToLink = [ "/share/omarchy" ];
+
+  fonts = {
+    packages = with pkgs; [ nerd-fonts.jetbrains-mono ];
+    fontconfig.defaultFonts.monospace = [ "JetBrainsMono Nerd Font" ];
+  };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -118,12 +162,27 @@ in
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
-     neovim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-     opencode
-     ghostty
-     quickshell
-     git
-     codex
+    neovim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    opencode
+    ghostty
+    quickshell
+    git
+    codex
+    omarchyDesktop
+    udiskie
+    hyprpicker
+    hyprsunset
+    grim
+    slurp
+    wl-clipboard
+    pamixer
+    brightnessctl
+    stow
+    ripgrep
+    lua-language-server
+    stylua
+    xdg-terminal-exec
+    starship
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];

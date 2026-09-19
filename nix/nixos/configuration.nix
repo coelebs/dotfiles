@@ -2,7 +2,7 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   unstable = import <nixpkgs-unstable> {
@@ -68,8 +68,50 @@ in
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
-  # Enable the XFCE Desktop Environment.
-  services.xserver.displayManager.lightdm.enable = true;
+  # DMS Greeter starts on Hyprland through greetd. Omarchy's Quickshell Polkit
+  # agent provides the themed authentication dialogs once the session starts.
+  services.displayManager.dms-greeter = {
+    enable = true;
+    compositor.name = "hyprland";
+    configFiles = [
+      (pkgs.writeText "session.json" (builtins.toJSON {
+        wallpaperPath = "";
+        wallpaperPathDark = "";
+        wallpaperPathLight = "";
+      }))
+    ];
+  };
+
+  # DMS Greeter's module populates this cache before this hook runs. Resolve
+  # Omarchy's active-background link so the next greeter uses the same image.
+  systemd.services.greetd.preStart = lib.mkAfter ''
+    source="/home/vin/.local/state/omarchy/current/background"
+    cache="/var/lib/dms-greeter"
+    wallpaper="$cache/omarchy-wallpaper"
+
+    if [ -e "$source" ]; then
+      ${pkgs.coreutils}/bin/cp --dereference -- "$source" "$wallpaper"
+      if [ -f "$cache/session.json" ]; then
+        ${pkgs.jq}/bin/jq --arg wallpaper "$wallpaper" '
+          .wallpaperPath = $wallpaper
+          | .wallpaperPathDark = $wallpaper
+          | .wallpaperPathLight = $wallpaper
+        ' "$cache/session.json" > "$cache/session.json.tmp"
+      else
+        ${pkgs.jq}/bin/jq -n --arg wallpaper "$wallpaper" '
+          {
+            wallpaperPath: $wallpaper,
+            wallpaperPathDark: $wallpaper,
+            wallpaperPathLight: $wallpaper
+          }
+        ' > "$cache/session.json.tmp"
+      fi
+      ${pkgs.coreutils}/bin/mv "$cache/session.json.tmp" "$cache/session.json"
+      ${pkgs.coreutils}/bin/chown dms-greeter:dms-greeter "$wallpaper" "$cache/session.json"
+    fi
+  '';
+
+  # XFCE remains installed until Hyprland is ready to replace it.
   services.xserver.desktopManager.xfce.enable = true;
 
   # Configure keymap in X11

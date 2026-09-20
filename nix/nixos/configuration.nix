@@ -24,6 +24,38 @@ let
     src = inputs.omarchy;
     hyprland = unstable.hyprland;
   };
+
+  dmsGreeterWallpaperSync = pkgs.writeShellApplication {
+    name = "dms-greeter-wallpaper-sync";
+    runtimeInputs = [ pkgs.coreutils pkgs.jq ];
+    text = ''
+      source="/home/vin/.local/state/omarchy/current/background"
+      cache="/var/lib/dms-greeter"
+      wallpaper="$cache/omarchy-wallpaper"
+
+      [ -e "$source" ] || exit 0
+
+      mkdir -p "$cache"
+      cp --dereference -- "$source" "$wallpaper"
+      if [ -f "$cache/session.json" ]; then
+        jq --arg wallpaper "$wallpaper" '
+          .wallpaperPath = $wallpaper
+          | .wallpaperPathDark = $wallpaper
+          | .wallpaperPathLight = $wallpaper
+        ' "$cache/session.json" > "$cache/session.json.tmp"
+      else
+        jq -n --arg wallpaper "$wallpaper" '
+          {
+            wallpaperPath: $wallpaper,
+            wallpaperPathDark: $wallpaper,
+            wallpaperPathLight: $wallpaper
+          }
+        ' > "$cache/session.json.tmp"
+      fi
+      mv "$cache/session.json.tmp" "$cache/session.json"
+      chown dms-greeter:dms-greeter "$wallpaper" "$cache/session.json"
+    '';
+  };
 in
 
 {
@@ -50,8 +82,19 @@ in
   boot.loader.systemd-boot.consoleMode = "0";
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # Show a graphical boot splash instead of the early boot console.
+  # Keep the handoff graphical: bootloader, Plymouth, then the DMS greeter.
+  # `xe` is ready in the initrd so Plymouth can take over the display early.
   boot.plymouth.enable = true;
+  boot.initrd = {
+    kernelModules = [ "xe" ];
+    verbose = false;
+  };
+  boot.consoleLogLevel = 0;
+  boot.kernelParams = [
+    "quiet"
+    "udev.log_level=3"
+    "vt.global_cursor_default=0"
+  ];
 
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -111,33 +154,25 @@ in
   };
 
   # DMS Greeter's module populates this cache before this hook runs. Resolve
-  # Omarchy's active-background link so the next greeter uses the same image.
+  # Omarchy's active-background link so the first greeter uses the same image.
   systemd.services.greetd.preStart = lib.mkAfter ''
-    source="/home/vin/.local/state/omarchy/current/background"
-    cache="/var/lib/dms-greeter"
-    wallpaper="$cache/omarchy-wallpaper"
-
-    if [ -e "$source" ]; then
-      ${pkgs.coreutils}/bin/cp --dereference -- "$source" "$wallpaper"
-      if [ -f "$cache/session.json" ]; then
-        ${pkgs.jq}/bin/jq --arg wallpaper "$wallpaper" '
-          .wallpaperPath = $wallpaper
-          | .wallpaperPathDark = $wallpaper
-          | .wallpaperPathLight = $wallpaper
-        ' "$cache/session.json" > "$cache/session.json.tmp"
-      else
-        ${pkgs.jq}/bin/jq -n --arg wallpaper "$wallpaper" '
-          {
-            wallpaperPath: $wallpaper,
-            wallpaperPathDark: $wallpaper,
-            wallpaperPathLight: $wallpaper
-          }
-        ' > "$cache/session.json.tmp"
-      fi
-      ${pkgs.coreutils}/bin/mv "$cache/session.json.tmp" "$cache/session.json"
-      ${pkgs.coreutils}/bin/chown dms-greeter:dms-greeter "$wallpaper" "$cache/session.json"
-    fi
+    ${dmsGreeterWallpaperSync}/bin/dms-greeter-wallpaper-sync
   '';
+
+  # greetd stays alive across logout, so preStart alone cannot pick up a
+  # background selected during the user session. Watch the state symlink and
+  # refresh DMS's root-owned cache as it changes.
+  systemd.services.dms-greeter-wallpaper-sync = {
+    description = "Sync Omarchy wallpaper to DMS Greeter";
+    serviceConfig.Type = "oneshot";
+    script = ''
+      exec ${dmsGreeterWallpaperSync}/bin/dms-greeter-wallpaper-sync
+    '';
+  };
+  systemd.paths.dms-greeter-wallpaper-sync = {
+    wantedBy = [ "multi-user.target" ];
+    pathConfig.PathChanged = "/home/vin/.local/state/omarchy/current/background";
+  };
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -240,6 +275,7 @@ in
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
+    adwaita-icon-theme
     neovim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     unstable.opencode
     ghostty

@@ -1,0 +1,29 @@
+diff --git a/bin/omarchy-theme-set b/bin/omarchy-theme-set
+--- a/bin/omarchy-theme-set
++++ b/bin/omarchy-theme-set
+@@ -334,8 +334,12 @@ if [[ $THEME_HEADLESS != "1" && $OMARCHY_THEME_SKIP_BACKGROUND != "1" ]]; then
+ fi
+
+ # Swap next theme in as current
+-rm -rf "$CURRENT_THEME_PATH"
++# `next-theme` is inside the current state directory, so deleting `theme`
++# first would also delete the staged files before they can be moved.
++rm -rf "$CURRENT_THEME_PATH.previous"
++mv "$CURRENT_THEME_PATH" "$CURRENT_THEME_PATH.previous"
+ mv "$NEXT_THEME_PATH" "$CURRENT_THEME_PATH"
++rm -rf "$CURRENT_THEME_PATH.previous"
+
+ # Store theme name for reference
+ echo "$THEME_NAME" >"$HOME/.local/state/omarchy/current/theme.name"
+diff --git a/bin/omarchy-theme-set b/bin/omarchy-theme-set
+--- a/bin/omarchy-theme-set
++++ b/bin/omarchy-theme-set
+@@ -315,6 +315,9 @@ if [[ ! -f $NEXT_THEME_PATH/colors.toml && -f $NEXT_THEME_PATH/alacritty.toml ]]
+   omarchy-theme-colors-from-alacritty "$NEXT_THEME_PATH"
+ fi
+
++# Nix store themes are read-only; staged state must remain replaceable.
++chmod -R u+w "$NEXT_THEME_PATH"
++
+ # Generate dynamic configs
+ omarchy-theme-set-templates

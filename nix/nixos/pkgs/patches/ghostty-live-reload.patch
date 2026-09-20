@@ -1,0 +1,12 @@
+diff --git a/bin/omarchy-restart-terminal b/bin/omarchy-restart-terminal
+--- a/bin/omarchy-restart-terminal
++++ b/bin/omarchy-restart-terminal
+@@ -10,6 +10,5 @@ if pgrep -x kitty >/dev/null; then
+   killall -SIGUSR1 kitty >/dev/null
+ fi
+ 
+-if pgrep -x ghostty >/dev/null; then
+-  killall -SIGUSR2 ghostty
+-fi
++# NixOS wraps Ghostty, so its process name is not reliably `ghostty`.
++pkill -USR2 -f '/ghostty( |$)' >/dev/null 2>&1 || true

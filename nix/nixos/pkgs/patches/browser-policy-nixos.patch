@@ -1,0 +1,15 @@
+diff --git a/bin/omarchy-theme-set-browser b/bin/omarchy-theme-set-browser
+--- a/bin/omarchy-theme-set-browser
++++ b/bin/omarchy-theme-set-browser
+@@ -22,7 +22,10 @@ refresh_running_browser() {
+ }
+ 
+ failed=0
+-omarchy-theme-set-browser-policy "${THEME_HEX_COLOR#\#}" || failed=1
++# NixOS does not provide Omarchy's privileged /usr/bin policy helper.
++if [[ -x /usr/bin/omarchy-theme-set-browser-policy ]]; then
++  omarchy-theme-set-browser-policy "${THEME_HEX_COLOR#\#}" || failed=1
++fi
+ 
+ refresh_running_browser chromium chromium
+ refresh_running_browser chrome google-chrome-stable || refresh_running_browser chrome google-chrome

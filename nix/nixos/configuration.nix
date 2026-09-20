@@ -182,6 +182,11 @@ in
   # Install firefox.
   programs.firefox.enable = true;
 
+  programs.localsend = {
+    enable = true;
+    openFirewall = true;
+  };
+
   programs.hyprland = {
     enable = true;
     withUWSM = true;

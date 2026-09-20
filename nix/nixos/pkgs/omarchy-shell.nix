@@ -1,3 +1,5 @@
+# This derivation packages the immutable Omarchy runtime for NixOS and patches
+# its upstream assumptions without managing mutable user configuration.
 { lib
 , stdenvNoCC
 , makeWrapper
@@ -22,6 +24,14 @@
 , fontconfig
 , perl
 , wl-clipboard
+, udiskie
+, hyprpicker
+, hyprsunset
+, grim
+, slurp
+, pamixer
+, brightnessctl
+, xdg-terminal-exec
 , writeText
 , callPackage
 , src
@@ -30,7 +40,43 @@
 let
   ttfx = callPackage ./ttfx.nix { };
   qtImageFormatsPath = "${qt6Packages.qtimageformats}/lib/qt-6/plugins";
-  runtimePath = lib.makeBinPath [ bash coreutils findutils gnugrep gnused gawk glib gtk3 gum jq util-linux procps systemd quickshell qt6Packages.qtimageformats hyprland uwsm inotify-tools fontconfig perl wl-clipboard ttfx ];
+  runtimeDependencies = [
+    udiskie
+    hyprpicker
+    hyprsunset
+    grim
+    slurp
+    wl-clipboard
+    pamixer
+    brightnessctl
+    xdg-terminal-exec
+  ];
+  runtimePath = lib.makeBinPath (
+    [
+      bash
+      coreutils
+      findutils
+      gnugrep
+      gnused
+      gawk
+      glib
+      gtk3
+      gum
+      jq
+      util-linux
+      procps
+      systemd
+      quickshell
+      qt6Packages.qtimageformats
+      hyprland
+      uwsm
+      inotify-tools
+      fontconfig
+      perl
+      ttfx
+    ]
+    ++ runtimeDependencies
+  );
   nixAutostart = writeText "autostart.lua" ''
     hl.on("hyprland.start", function()
       hl.exec_cmd("systemctl --user import-environment $(env | cut -d'=' -f 1)")
@@ -92,4 +138,5 @@ stdenvNoCC.mkDerivation {
     platforms = lib.platforms.linux;
     mainProgram = "omarchy-nix-init";
   };
+  passthru.runtimeDependencies = runtimeDependencies;
 }

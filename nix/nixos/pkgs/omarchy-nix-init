@@ -1,4 +1,6 @@
 #!/bin/bash
+# This user-invoked helper initializes editable Omarchy config without letting
+# the immutable NixOS package overwrite files under the user's home directory.
 
 set -euo pipefail
 

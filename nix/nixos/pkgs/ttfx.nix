@@ -1,3 +1,5 @@
+# This small package supplies Omarchy's terminal text effects without depending
+# on an external checkout at NixOS evaluation time.
 { lib
 , rustPlatform
 , fetchFromGitHub

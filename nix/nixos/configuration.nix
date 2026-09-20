@@ -32,11 +32,15 @@ let
       source="/home/vin/.local/state/omarchy/current/background"
       cache="/var/lib/dms-greeter"
       wallpaper="$cache/omarchy-wallpaper"
+      override="$cache/greeter_wallpaper_override.jpg"
 
       [ -e "$source" ] || exit 0
 
       mkdir -p "$cache"
       cp --dereference -- "$source" "$wallpaper"
+      # DMS Greeter reads this dedicated override before session.json.
+      cp --dereference -- "$source" "$override.tmp"
+      mv "$override.tmp" "$override"
       if [ -f "$cache/session.json" ]; then
         jq --arg wallpaper "$wallpaper" '
           .wallpaperPath = $wallpaper
@@ -53,7 +57,7 @@ let
         ' > "$cache/session.json.tmp"
       fi
       mv "$cache/session.json.tmp" "$cache/session.json"
-      chown dms-greeter:dms-greeter "$wallpaper" "$cache/session.json"
+      chown dms-greeter:dms-greeter "$wallpaper" "$override" "$cache/session.json"
     '';
   };
 in

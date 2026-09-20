@@ -1,0 +1,108 @@
+#!/bin/bash
+
+set -euo pipefail
+
+omarchy_path="@omarchyPath@"
+legacy_nix_autostart="@legacyNixAutostart@"
+config_home="${XDG_CONFIG_HOME:-$HOME/.config}"
+force=0
+dry_run=0
+install_hyprland=0
+install_shell=0
+install_terminals=0
+theme=""
+
+usage() {
+  cat <<'USAGE'
+Usage: omarchy-nix-init [--all] [--hyprland] [--shell] [--terminals] [--theme NAME] [--force] [--dry-run]
+
+Initialize editable Omarchy configuration files for a Nix installation.
+USAGE
+}
+
+run() {
+  if (( dry_run )); then
+    printf 'Would run: '
+    printf '%q ' "$@"
+    printf '\n'
+  else
+    "$@"
+  fi
+}
+
+copy_file() {
+  local source="$1"
+  local target="$2"
+
+  if [[ -e $target || -L $target ]]; then
+    if (( !force )); then
+      printf 'Leaving existing %s\n' "$target"
+      return
+    fi
+
+    run mkdir -p "$(dirname "$target")"
+    run mv "$target" "$target.omarchy-nix-init-backup-$(date +%Y%m%d%H%M%S)"
+  else
+    run mkdir -p "$(dirname "$target")"
+  fi
+
+  run cp "$source" "$target"
+  run chmod u+w "$target"
+  printf 'Installed %s\n' "$target"
+}
+
+while (( $# )); do
+  case "$1" in
+    --all) install_hyprland=1; install_shell=1; install_terminals=1 ;;
+    --hyprland) install_hyprland=1 ;;
+    --shell) install_shell=1 ;;
+    --terminals) install_terminals=1 ;;
+    --theme)
+      shift
+      [[ -n ${1:-} ]] || { printf '%s\n' '--theme requires a theme name' >&2; exit 2; }
+      theme="$1"
+      ;;
+    --force) force=1 ;;
+    --dry-run) dry_run=1 ;;
+    -h|--help) usage; exit 0 ;;
+    *) printf 'Unknown option: %s\n' "$1" >&2; usage >&2; exit 2 ;;
+  esac
+  shift
+done
+
+if (( !install_hyprland && !install_shell && !install_terminals )); then
+  usage >&2
+  exit 2
+fi
+
+if (( install_hyprland )); then
+  autostart="$config_home/hypr/autostart.lua"
+  if [[ -e $autostart ]] && [[ $(<"$autostart") == $(<"$legacy_nix_autostart") ]]; then
+    run cp "$omarchy_path/config/hypr/autostart.lua" "$autostart"
+    run chmod u+w "$autostart"
+    printf 'Replaced legacy generated %s\n' "$autostart"
+  fi
+
+  for file in hyprland.lua monitors.lua input.lua bindings.lua looknfeel.lua autostart.lua hyprsunset.conf xdph.conf; do
+    copy_file "$omarchy_path/config/hypr/$file" "$config_home/hypr/$file"
+  done
+fi
+
+if (( install_shell )); then
+  copy_file "$omarchy_path/config/omarchy/shell.json" "$config_home/omarchy/shell.json"
+  copy_file "$omarchy_path/icon.txt" "$config_home/omarchy/branding/about.txt"
+  copy_file "$omarchy_path/nix/omanixy-screensaver.txt" "$config_home/omarchy/branding/screensaver.txt"
+  run mkdir -p "$config_home/omarchy/plugins" "$config_home/omarchy/extensions"
+fi
+
+if (( install_terminals )); then
+  for file in alacritty/alacritty.toml foot/foot.ini ghostty/config kitty/kitty.conf; do
+    copy_file "$omarchy_path/config/$file" "$config_home/$file"
+  done
+fi
+
+if [[ -n $theme ]]; then
+  run env OMARCHY_THEME_HEADLESS=1 omarchy-theme-set "$theme"
+fi
+
+printf '%s\n' 'Set OMARCHY_PATH for your Hyprland session to the installed package share directory if it is not already inherited.'

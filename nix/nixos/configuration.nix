@@ -2,12 +2,12 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 let
-  # Module imports are resolved before NixOS creates `pkgs`. Keep the channel
-  # path separate so the DMS module below can be imported at that early stage.
-  unstablePath = <nixpkgs-unstable>;
+  # Module imports are resolved before NixOS creates `pkgs`. Keep the unstable
+  # input separate so the DMS module below can be imported at that early stage.
+  unstablePath = inputs.nixpkgs-unstable;
 
   # Packages are resolved later, once `pkgs` is available. This is the package
   # set used for Hyprland, DMS Greeter, and the other explicit unstable pins.
@@ -16,18 +16,21 @@ let
     config.allowUnfree = true;
   };
 
-  # Use unstable Hyprland for omarchyDesktop helpers (hyprctl, etc.) so they
+  # Use unstable Hyprland for Omarchy helpers (hyprctl, etc.) so they
   # match the running compositor. Omarchy expects >=0.56.2 for the
   # `workspace.special_active` event in default/hypr/qconsole.lua, while
   # stable pkgs.hyprland is still 0.55.4 which logs a Lua error on startup.
-  omarchyDesktop = pkgs.callPackage /home/vin/Projects/omarchy/default.nix { hyprland = unstable.hyprland; };
+  omarchyShell = pkgs.callPackage ./pkgs/omarchy-shell.nix {
+    src = inputs.omarchy;
+    hyprland = unstable.hyprland;
+  };
 in
 
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      <nixos-hardware/framework/13-inch/intel-core-ultra-series3>
+      "${inputs.nixos-hardware}/framework/13-inch/intel-core-ultra-series3"
 
       # The stable NixOS module launches the legacy DMS Shell greeter script.
       # The current DMS greeter is a separate program, so it needs the newer
@@ -222,7 +225,7 @@ in
 
   #TODO move this to the nix-init things
   environment.sessionVariables.OMARCHY_PATH =
-    "/run/current-system/sw/share/omarchy";
+    "${omarchyShell}/share/omarchy";
 
   environment.pathsToLink = [ "/share/omarchy" ];
 
@@ -243,7 +246,7 @@ in
     quickshell
     git
     codex
-    omarchyDesktop
+    omarchyShell
     udiskie
     hyprpicker
     hyprsunset

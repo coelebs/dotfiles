@@ -136,9 +136,6 @@ in
     fi
   '';
 
-  # XFCE remains installed until Hyprland is ready to replace it.
-  services.xserver.desktopManager.xfce.enable = true;
-
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "us";

@@ -5,7 +5,13 @@
 { config, lib, pkgs, ... }:
 
 let
-  unstable = import <nixpkgs-unstable> {
+  # Module imports are resolved before NixOS creates `pkgs`. Keep the channel
+  # path separate so the DMS module below can be imported at that early stage.
+  unstablePath = <nixpkgs-unstable>;
+
+  # Packages are resolved later, once `pkgs` is available. This is the package
+  # set used for Hyprland, DMS Greeter, and the other explicit unstable pins.
+  unstable = import unstablePath {
     inherit (pkgs) system;
     config.allowUnfree = true;
   };
@@ -27,7 +33,19 @@ in
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       <nixos-hardware/framework/13-inch/intel-core-ultra-series3>
+
+      # The stable NixOS module launches the legacy DMS Shell greeter script.
+      # The current DMS greeter is a separate program, so it needs the newer
+      # module from the same unstable channel as the program below.
+      "${unstablePath}/nixos/modules/services/display-managers/dms-greeter.nix"
     ];
+
+  # Do not load both DMS greeter modules. The stable module expects an old
+  # `dms-shell/share/quickshell/dms/...` directory that newer DMS packages no
+  # longer provide, which results in a black screen and "No such file or
+  # directory" at login. The imported unstable module instead runs the
+  # `dms-greeter` executable directly.
+  disabledModules = [ "services/display-managers/dms-greeter.nix" ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -72,10 +90,18 @@ in
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
-  # DMS Greeter starts on Hyprland through greetd. Omarchy's Quickshell Polkit
-  # agent provides the themed authentication dialogs once the session starts.
+  # DMS is the graphical login interface, but it is not a Wayland compositor.
+  # Greetd therefore starts a small, temporary Hyprland session to display DMS.
+  # After a successful login, that greeter session exits and your normal
+  # Hyprland session starts.
+  #
+  # Keep the module and package on the same channel. The old stable module was
+  # written for `dms-shell` 1.4.x. Modern DMS provides a separate
+  # `dms-greeter` program that generates a Lua Hyprland configuration, avoiding
+  # Hyprland's deprecated `.conf` configuration-format warning.
   services.displayManager.dms-greeter = {
     enable = true;
+    package = unstable.dms-greeter;
     compositor.name = "hyprland";
     configFiles = [
       (pkgs.writeText "session.json" (builtins.toJSON {

@@ -18,6 +18,21 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Home Manager shares the stable package set with NixOS. It owns files and
+    # packages in the primary user's home directory, not system services.
+    home-manager = {
+      url = "github:nix-community/home-manager/release-26.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # The flake lives in nix/, while the deployable dotfile trees live at the
+    # repository root. Keep that source explicit so pure flake evaluation can
+    # include them without copying or rewriting the established Stow layout.
+    dotfiles = {
+      url = "path:..";
+      flake = false;
+    };
+
     # Omarchy is source data, not a Nix flake. The local package definition
     # below builds the NixOS-compatible runtime from this locked source.
     omarchy = {
@@ -64,10 +79,14 @@
           # Stable Nixpkgs still carries the legacy DMS module. Import the
           # matching unstable module and disable the incompatible stable one.
           imports = [
+            # Module imports must be fixed before NixOS evaluates options, so
+            # Home Manager is imported here rather than from a local module.
+            inputs.home-manager.nixosModules.home-manager
             "${inputs.nixpkgs-unstable}/nixos/modules/services/display-managers/dms-greeter.nix"
             ./nixos/modules/boot.nix
             ./nixos/modules/desktop.nix
             ./nixos/modules/greeter.nix
+            ./nixos/modules/home-manager.nix
             ./nixos/modules/localization.nix
             ./nixos/modules/networking.nix
             ./nixos/modules/nix.nix
@@ -84,6 +103,7 @@
           # overlay. `omarchyShell` is built against the same Hyprland package.
           _module.args = {
             inherit omarchyShell pkgsUnstable;
+            dotfiles = inputs.dotfiles;
           };
         };
 

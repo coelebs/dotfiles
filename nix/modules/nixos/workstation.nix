@@ -49,4 +49,7 @@
   environment.systemPackages = with pkgs; [
     adwaita-icon-theme
   ];
+
+  # Expose completion definitions from system packages to Home Manager's Zsh.
+  environment.pathsToLink = [ "/share/zsh" ];
 }

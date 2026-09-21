@@ -1,9 +1,11 @@
-# This module manages the active, portable dotfiles without rewriting their
-# contents yet. Native Home Manager options can replace individual files after
-# this behavior-preserving migration has been used successfully.
+# This module owns the primary user's portable configuration. Native Home
+# Manager options generate Bash while files that need their own format remain
+# sourced from the repository root.
 { dotfiles, pkgs, pkgsUnstable, primaryUser, ... }:
 
 {
+  imports = [ ./shell.nix ];
+
   home = {
     username = primaryUser;
     homeDirectory = "/home/${primaryUser}";
@@ -14,14 +16,12 @@
     packages = with pkgs; [
       aerc
       codex
-      fzf
       git
       ghostty
       lua-language-server
       neovim
       rapid-photo-downloader
       ripgrep
-      starship
       stylua
       tmux
       unzip
@@ -29,13 +29,10 @@
     ];
   };
 
-  # `dotfiles` is the repository root source input. Home Manager will atomically
-  # own these existing Stow targets after activation, so do not run Stow for
-  # these packages again.
+  # `dotfiles` is the repository root source input. Home Manager owns these
+  # Stow targets after activation. `force` replaces only the old Stow links;
+  # their source files remain in this repository.
   home.file = {
-    ".alias".source = dotfiles + "/shell/.alias";
-    ".bash_profile".source = dotfiles + "/shell/.bash_profile";
-    ".bashrc".source = dotfiles + "/shell/.bashrc";
     ".local/bin".source = dotfiles + "/bin/.local/bin";
     ".tmux.conf".source = dotfiles + "/tmux/.tmux.conf";
   };

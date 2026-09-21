@@ -1,6 +1,6 @@
 # This module defines the owner-specific interface and creates the primary
 # account, allowing a host to supply identity without hardcoding it elsewhere.
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   inherit (config.dotfiles) primaryUser primaryUserFullName;
@@ -22,6 +22,10 @@ in
     isNormalUser = true;
     description = primaryUserFullName;
     home = "/home/${primaryUser}";
+    shell = pkgs.zsh;
     extraGroups = [ "networkmanager" "wheel" ];
   };
+
+  # NixOS initializes the profile paths used by the account's login shell.
+  config.programs.zsh.enable = true;
 }

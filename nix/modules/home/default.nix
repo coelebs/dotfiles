@@ -4,7 +4,7 @@
 { dotfiles, pkgs, pkgsUnstable, primaryUser, ... }:
 
 {
-  imports = [ ./shell.nix ];
+  imports = [ ./shell.nix ./tmux.nix ];
 
   home = {
     username = primaryUser;
@@ -23,7 +23,6 @@
       rapid-photo-downloader
       ripgrep
       stylua
-      tmux
       unzip
       pkgsUnstable.opencode
     ];
@@ -34,8 +33,8 @@
   # their source files remain in this repository.
   home.file = {
     ".local/bin".source = dotfiles + "/bin/.local/bin";
-    ".tmux.conf".source = dotfiles + "/tmux/.tmux.conf";
   };
 
   xdg.configFile."nvim".source = dotfiles + "/nvim/.config/nvim";
+
 }

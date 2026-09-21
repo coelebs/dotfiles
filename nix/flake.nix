@@ -52,7 +52,7 @@
         };
 
       mkOmarchyShell = { pkgs, pkgsUnstable }:
-        pkgs.callPackage ./nixos/pkgs/omarchy-shell.nix {
+        pkgs.callPackage ./packages/omarchy-shell.nix {
           src = omarchy;
           hyprland = pkgsUnstable.hyprland;
         };
@@ -83,19 +83,7 @@
             # Home Manager is imported here rather than from a local module.
             inputs.home-manager.nixosModules.home-manager
             "${inputs.nixpkgs-unstable}/nixos/modules/services/display-managers/dms-greeter.nix"
-            ./nixos/modules/boot.nix
-            ./nixos/modules/desktop.nix
-            ./nixos/modules/greeter.nix
-            ./nixos/modules/home-manager.nix
-            ./nixos/modules/localization.nix
-            ./nixos/modules/networking.nix
-            ./nixos/modules/nix.nix
-            ./nixos/modules/omarchy.nix
-            ./nixos/modules/packages.nix
-            ./nixos/modules/programs.nix
-            ./nixos/modules/services.nix
-            ./nixos/modules/user-options.nix
-            ./nixos/modules/user.nix
+            ./modules/nixos/workstation.nix
           ];
           disabledModules = [ "services/display-managers/dms-greeter.nix" ];
 
@@ -114,7 +102,7 @@
         modules = [
           self.nixosModules.workstation
           "${inputs.nixos-hardware}/framework/13-inch/intel-core-ultra-series3"
-          ./nixos/hosts/nixos
+          ./hosts/nixos
         ];
       };
     };

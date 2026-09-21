@@ -5,6 +5,11 @@
 
   networking.hostName = "nixos";
 
+  # The Framework's Intel graphics must be ready in the initrd for Plymouth to
+  # take over the display early. This is hardware-specific, not a workstation
+  # default shared by every host.
+  boot.initrd.kernelModules = [ "xe" ];
+
   dotfiles = {
     primaryUser = "vin";
     primaryUserFullName = "Vincent Kriek";

@@ -4,16 +4,12 @@
 
 {
   boot.loader.systemd-boot.enable = true;
-  boot.loader.systemd-boot.consoleMode = "0";
   boot.loader.efi.canTouchEfiVariables = true;
 
   # Keep the handoff graphical: bootloader, Plymouth, then the DMS greeter.
-  # `xe` is ready in the initrd so Plymouth can take over the display early.
+  # Individual hosts add their graphics module to the initrd when required.
   boot.plymouth.enable = true;
-  boot.initrd = {
-    kernelModules = [ "xe" ];
-    verbose = false;
-  };
+  boot.initrd.verbose = false;
   boot.consoleLogLevel = 0;
   boot.kernelParams = [
     "quiet"

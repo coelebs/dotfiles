@@ -21,6 +21,6 @@ in
       inherit dotfiles;
     };
 
-    users.${primaryUser} = import ../../home/default.nix;
+    users.${primaryUser} = import ../home/default.nix;
   };
 }

@@ -21,11 +21,16 @@
     };
   };
 
+  services.fprintd.enable = true;
+  security.pam.services.sudo.fprintAuth = true;
+
   # Omarchy's shell and lock screen rely on these desktop-wide services.
   security.polkit.enable = true;
   security.pam.services.omarchy-lock-password = { };
   services.upower.enable = true;
   services.power-profiles-daemon.enable = true;
+  # Hyprland routes XF86PowerOff to Omarchy's system/power menu.
+  services.logind.settings.Login.HandlePowerKey = "ignore";
   services.udisks2.enable = true;
   hardware.bluetooth.enable = true;
 }

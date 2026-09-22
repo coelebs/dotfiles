@@ -15,6 +15,7 @@
 
     packages = with pkgs; [
       aerc
+      calibre
       codex
       git
       ghostty
@@ -36,5 +37,20 @@
   };
 
   xdg.configFile."nvim".source = dotfiles + "/nvim/.config/nvim";
+  xdg.configFile."omarchy/hooks/theme-set.d/aerc-theme-omarchy" = {
+    source = dotfiles + "/bin/.local/bin/aerc-theme-omarchy";
+    executable = true;
+    force = true;
+  };
+  # Calibre persists this library choice in its writable preferences.
+  xdg.desktopEntries."calibre-gui" = {
+    name = "Calibre";
+    genericName = "E-book library management";
+    exec = "calibre --with-library /mnt/nas/boeken %U";
+    icon = "calibre-gui";
+    terminal = false;
+    categories = [ "Office" "Viewer" ];
+    mimeType = [ "application/epub+zip" "application/x-mobipocket-ebook" ];
+  };
 
 }

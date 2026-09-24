@@ -1,6 +1,6 @@
 # Home Manager owns the primary user's files and per-user packages. NixOS keeps
 # ownership of the account itself, hardware, shared services, and the desktop.
-{ config, dotfiles, pkgsUnstable, ... }:
+{ config, dotfiles, omarchyShell, pinentryOmarchy, pkgsUnstable, ... }:
 
 let
   inherit (config.dotfiles) primaryUser;
@@ -17,7 +17,7 @@ in
     backupFileExtension = "before-home-manager";
 
     extraSpecialArgs = {
-      inherit pkgsUnstable primaryUser;
+      inherit omarchyShell pinentryOmarchy pkgsUnstable primaryUser;
       inherit dotfiles;
     };
 

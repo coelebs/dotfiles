@@ -56,16 +56,26 @@
           src = omarchy;
           hyprland = pkgsUnstable.hyprland;
         };
+      mkPinentryOmarchy = { pkgs, omarchyShell }:
+        pkgs.callPackage ./packages/pinentry-omarchy.nix { inherit omarchyShell; };
     in
     {
       # Build the desktop runtime independently of a whole NixOS system.
-      packages.${system}.omarchy-shell = mkOmarchyShell {
-        pkgs = import nixpkgs {
-          inherit system;
-          config.allowUnfree = true;
+      packages.${system} =
+        let
+          pkgs = import nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+          };
+          omarchyShell = mkOmarchyShell {
+            inherit pkgs;
+            pkgsUnstable = mkPkgsUnstable system;
+          };
+        in
+        {
+          omarchy-shell = omarchyShell;
+          pinentry-omarchy = mkPinentryOmarchy { inherit pkgs omarchyShell; };
         };
-        pkgsUnstable = mkPkgsUnstable system;
-      };
 
       # This is the interface a future private host flake will consume. It
       # captures the flake inputs so callers only import one workstation module.
@@ -74,6 +84,7 @@
           hostSystem = pkgs.stdenv.hostPlatform.system;
           pkgsUnstable = mkPkgsUnstable hostSystem;
           omarchyShell = mkOmarchyShell { inherit pkgs pkgsUnstable; };
+          pinentryOmarchy = mkPinentryOmarchy { inherit pkgs omarchyShell; };
         in
         {
           # Stable Nixpkgs still carries the legacy DMS module. Import the
@@ -90,7 +101,7 @@
           # Keep unstable use visible in each module instead of hiding it in an
           # overlay. `omarchyShell` is built against the same Hyprland package.
           _module.args = {
-            inherit omarchyShell pkgsUnstable;
+            inherit omarchyShell pinentryOmarchy pkgsUnstable;
             dotfiles = inputs.dotfiles;
           };
         };

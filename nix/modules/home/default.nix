@@ -1,7 +1,7 @@
 # This module owns the primary user's portable configuration. Native Home
 # Manager options generate Bash while files that need their own format remain
 # sourced from the repository root.
-{ dotfiles, pkgs, pkgsUnstable, primaryUser, ... }:
+{ dotfiles, lib, omarchyShell, pinentryOmarchy, pkgs, pkgsUnstable, primaryUser, ... }:
 
 {
   imports = [ ./shell.nix ./tmux.nix ];
@@ -26,6 +26,8 @@
       stylua
       unzip
       pkgsUnstable.opencode
+      pinentryOmarchy
+      rbw
     ];
   };
 
@@ -42,6 +44,30 @@
     executable = true;
     force = true;
   };
+  xdg.configFile."omarchy/plugins/vin.pinentry".source = "${pinentryOmarchy}/share/omarchy/plugins/vin.pinentry";
+
+  home.activation.enableOmarchyPinentry = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    # Prefer Omarchy's own IPC: it enables the plugin in the running shell and
+    # persists the entry to shell.json in one step.
+    if ${omarchyShell}/bin/omarchy-shell shell enablePlugin vin.pinentry true >/dev/null 2>&1; then
+      enabled=1
+    else
+      enabled=0
+    fi
+    # Fallback for a fresh machine where the shell is not running yet.
+    if [[ $enabled -eq 0 ]]; then
+      state="$HOME/.config/omarchy/shell.json"
+      if [[ ! -f $state ]]; then
+        install -Dm644 "${omarchyShell}/share/omarchy/config/omarchy/shell.json" "$state"
+      fi
+      temporary=$(mktemp "$state.XXXXXX")
+      ${pkgs.jq}/bin/jq '
+        .plugins = ((.plugins // []) | if type == "array" then . else [] end | if any(.[]; .id == "vin.pinentry") then . else . + [{ "id": "vin.pinentry" }] end)
+      ' "$state" > "$temporary"
+      mv "$temporary" "$state"
+    fi
+    ${pkgs.rbw}/bin/rbw config set pinentry "${pinentryOmarchy}/bin/pinentry-omarchy"
+  '';
   # Calibre persists this library choice in its writable preferences.
   xdg.desktopEntries."calibre-gui" = {
     name = "Calibre";

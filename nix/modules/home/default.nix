@@ -15,11 +15,14 @@
 
     packages = with pkgs; [
       aerc
+      bambu-studio
       calibre
       codex
       git
       ghostty
+      htop
       lua-language-server
+      nchat
       neovim
       rapid-photo-downloader
       ripgrep

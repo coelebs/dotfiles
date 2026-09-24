@@ -32,6 +32,7 @@
 , pamixer
 , brightnessctl
 , xdg-terminal-exec
+, imv
 , writeText
 , callPackage
 , src
@@ -50,6 +51,7 @@ let
     pamixer
     brightnessctl
     xdg-terminal-exec
+    imv
   ];
   runtimePath = lib.makeBinPath (
     [

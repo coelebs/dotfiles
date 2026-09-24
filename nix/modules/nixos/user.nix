@@ -24,7 +24,14 @@ in
     home = "/home/${primaryUser}";
     shell = pkgs.zsh;
     extraGroups = [ "networkmanager" "wheel" ];
+
+    # Keep the user systemd manager running across logouts so tmux
+    # sessions persist with no active graphical session.
+    linger = true;
   };
+
+  # Don't kill user processes when a session logs out.
+  config.services.logind.killUserProcesses = false;
 
   # NixOS initializes the profile paths used by the account's login shell.
   config.programs.zsh.enable = true;

@@ -101,6 +101,22 @@
         "type": "github"
       }
     },
+    "pinentry-omarchy": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790277720,
+        "narHash": "sha256-Vi68urEWD5Tsqc9DcqlnMsdEf3sWvRHU0WH9H+G/6LA=",
+        "owner": "coelebs",
+        "repo": "pinentry-omarchy",
+        "rev": "d8ed638fce9c3e9559f397fd6dd37261028633c8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "coelebs",
+        "repo": "pinentry-omarchy",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "dotfiles": "dotfiles",
@@ -108,7 +124,8 @@
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
-        "omarchy": "omarchy"
+        "omarchy": "omarchy",
+        "pinentry-omarchy": "pinentry-omarchy"
       }
     }
   },

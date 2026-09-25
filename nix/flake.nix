@@ -39,9 +39,17 @@
       url = "github:omacom/omarchy";
       flake = false;
     };
+
+    # The pinentry plugin source is published from the same owner that
+    # maintains this repository; the lock file pins the exact revision used
+    # for builds.
+    pinentry-omarchy = {
+      url = "github:coelebs/pinentry-omarchy";
+      flake = false;
+    };
   };
 
-  outputs = inputs@{ self, nixpkgs, omarchy, ... }:
+  outputs = inputs@{ self, nixpkgs, omarchy, pinentry-omarchy, ... }:
     let
       system = "x86_64-linux";
 
@@ -57,7 +65,10 @@
           hyprland = pkgsUnstable.hyprland;
         };
       mkPinentryOmarchy = { pkgs, omarchyShell }:
-        pkgs.callPackage ./packages/pinentry-omarchy.nix { inherit omarchyShell; };
+        pkgs.callPackage ./packages/pinentry-omarchy.nix {
+          inherit omarchyShell;
+          src = pinentry-omarchy;
+        };
     in
     {
       # Build the desktop runtime independently of a whole NixOS system.

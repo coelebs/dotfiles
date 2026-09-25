@@ -47,12 +47,13 @@
     executable = true;
     force = true;
   };
-  xdg.configFile."omarchy/plugins/vin.pinentry".source = "${pinentryOmarchy}/share/omarchy/plugins/vin.pinentry";
+  xdg.configFile."omarchy/plugins/coelebs.pinentry".source = "${pinentryOmarchy}/share/omarchy/plugins/coelebs.pinentry";
 
   home.activation.enableOmarchyPinentry = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    ${omarchyShell}/bin/omarchy-shell shell setPluginEnabled vin.pinentry false >/dev/null 2>&1 || true
     # Prefer Omarchy's own IPC: it enables the plugin in the running shell and
     # persists the entry to shell.json in one step.
-    if ${omarchyShell}/bin/omarchy-shell shell enablePlugin vin.pinentry true >/dev/null 2>&1; then
+    if ${omarchyShell}/bin/omarchy-shell shell enablePlugin coelebs.pinentry true >/dev/null 2>&1; then
       enabled=1
     else
       enabled=0
@@ -65,7 +66,21 @@
       fi
       temporary=$(mktemp "$state.XXXXXX")
       ${pkgs.jq}/bin/jq '
-        .plugins = ((.plugins // []) | if type == "array" then . else [] end | if any(.[]; .id == "vin.pinentry") then . else . + [{ "id": "vin.pinentry" }] end)
+        .plugins = ((.plugins // []) | if type == "array" then . else [] end
+          | map(select(.id != "vin.pinentry"))
+          | if any(.[]; .id == "coelebs.pinentry") then . else . + [{ "id": "coelebs.pinentry" }] end)
+      ' "$state" > "$temporary"
+      mv "$temporary" "$state"
+    fi
+    # Drop the legacy vin.pinentry entry from shell.json when the IPC route
+    # succeeded; jq still runs in the fallback branch above.
+    state="$HOME/.config/omarchy/shell.json"
+    if [[ -f $state ]]; then
+      temporary=$(mktemp "$state.XXXXXX")
+      ${pkgs.jq}/bin/jq '
+        if type == "object" and (.plugins // null | type == "array") then
+          .plugins |= map(select(.id != "vin.pinentry"))
+        else . end
       ' "$state" > "$temporary"
       mv "$temporary" "$state"
     fi

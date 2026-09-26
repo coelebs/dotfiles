@@ -18,6 +18,15 @@
       bambu-studio
       calibre
       codex
+      digikam
+      (symlinkJoin {
+        name = "darktable";
+        paths = [ darktable ];
+        nativeBuildInputs = [ makeWrapper ];
+        postBuild = ''
+          wrapProgram $out/bin/darktable --set XCURSOR_SIZE 38
+        '';
+      })
       git
       ghostty
       htop

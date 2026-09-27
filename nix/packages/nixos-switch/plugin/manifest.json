@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "coelebs.nixos-switch",
+  "name": "NixOS switch status",
+  "version": "1.0.0",
+  "author": "coelebs",
+  "description": "Shows when a NixOS rebuild is running",
+  "kinds": ["bar-widget"],
+  "entryPoints": {
+    "barWidget": "Widget.qml"
+  },
+  "barWidget": {
+    "displayName": "NixOS switch status",
+    "description": "Shows when a NixOS rebuild is running",
+    "category": "System",
+    "allowMultiple": false,
+    "defaultSection": "center"
+  }
+}

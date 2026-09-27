@@ -1,0 +1,24 @@
+#!/bin/sh
+# Reconcile only our widget. Omarchy keeps ownership of the rest of shell.json.
+set -eu
+
+# A first install can activate Home Manager before a desktop is running. The
+# post-boot hook will try again once Omarchy starts.
+if ! omarchy-shell shell ping >/dev/null 2>&1; then
+  exit 0
+fi
+omarchy-shell shell rescanPlugins >/dev/null
+
+# One-time migration from the previous locally installed widget. Leave its
+# source files alone: they may be user-managed rather than ours to remove.
+config_file=$HOME/.config/omarchy/shell.json
+if [ -f "$config_file" ] && jq -e '
+  [.bar.layout.left[]?, .bar.layout.center[]?, .bar.layout.right[]?]
+  | any(.[]; (if type == "object" then .id else . end) == "vin.nixos-switch")
+' "$config_file" >/dev/null; then
+  omarchy-shell shell setPluginEnabled vin.nixos-switch false >/dev/null
+fi
+
+# Unlike `move`, `put` does nothing once the widget has been placed. Users
+# remain free to reorder it; a renamed/removed upstream neighbor is fine.
+omarchy-bar put coelebs.nixos-switch --section center --after omarchy.system-update

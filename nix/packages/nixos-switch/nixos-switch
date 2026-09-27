@@ -1,0 +1,65 @@
+#!/bin/sh
+# Rebuild a live NixOS checkout. The paths are provided by the host's Nix
+# module, rather than inferred from this executable's location in /nix/store.
+set -eu
+
+if [ "${1:-}" = --help ]; then
+  printf '%s\n' 'Usage: nixos-switch' \
+    'Set NIXOS_SWITCH_MACHINE_FLAKE and NIXOS_SWITCH_DOTFILES_CHECKOUT via the host module.'
+  exit 0
+fi
+if [ "$#" -ne 0 ]; then
+  printf '%s\n' 'nixos-switch: unexpected arguments (try --help)' >&2
+  exit 2
+fi
+
+machine_dir=${NIXOS_SWITCH_MACHINE_FLAKE:?Set NIXOS_SWITCH_MACHINE_FLAKE}
+dotfiles_dir=${NIXOS_SWITCH_DOTFILES_CHECKOUT:?Set NIXOS_SWITCH_DOTFILES_CHECKOUT}
+configuration=${NIXOS_SWITCH_CONFIGURATION:-nixos}
+
+if [ ! -d "$machine_dir" ] || [ ! -f "$machine_dir/flake.nix" ]; then
+  printf 'nixos-switch: no flake at %s\n' "$machine_dir" >&2
+  exit 1
+fi
+if [ ! -f "$dotfiles_dir/nix/flake.nix" ]; then
+  printf 'nixos-switch: no dotfiles/nix flake at %s\n' "$dotfiles_dir" >&2
+  exit 1
+fi
+
+# Resolve before invoking pkexec: its sanitized PATH need not include
+# nixos-rebuild. Do not run the graphical prompt when called from a terminal.
+rebuild=$(command -v nixos-rebuild)
+set -- "$rebuild" switch --flake "$machine_dir#$configuration" \
+  --override-input dotfiles "path:$dotfiles_dir?dir=nix"
+
+state_dir=${XDG_RUNTIME_DIR:-/run/user/$(id -u)}
+state_file=$state_dir/nixos-switch.pid
+log_file=
+umask 077
+mkdir -p "$state_dir"
+printf '%s\n' "$$" > "$state_file"
+
+cleanup() {
+  if [ -r "$state_file" ] && [ "$(command cat "$state_file")" = "$$" ]; then
+    rm -f "$state_file"
+  fi
+  if [ -n "$log_file" ]; then
+    rm -f "$log_file"
+  fi
+}
+trap 'cleanup' 0
+trap 'exit 129' HUP
+trap 'exit 130' INT
+trap 'exit 143' TERM
+
+if [ -t 0 ]; then
+  sudo "$@"
+else
+  log_file=$(mktemp)
+  if pkexec "$@" > "$log_file" 2>&1; then
+    notify-send 'NixOS switch' 'Switched to the latest generation.'
+  else
+    notify-send -u critical 'NixOS switch failed' "$(tail -n 5 "$log_file")"
+    exit 1
+  fi
+fi

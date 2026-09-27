@@ -69,6 +69,7 @@
           inherit omarchyShell;
           src = pinentry-omarchy;
         };
+      mkOpencode2 = pkgs: pkgs.callPackage ./packages/opencode2.nix { };
     in
     {
       # Build the desktop runtime independently of a whole NixOS system.
@@ -86,6 +87,7 @@
         {
           omarchy-shell = omarchyShell;
           pinentry-omarchy = mkPinentryOmarchy { inherit pkgs omarchyShell; };
+          opencode2 = mkOpencode2 pkgs;
         };
 
       # This is the interface a future private host flake will consume. It
@@ -96,6 +98,7 @@
           pkgsUnstable = mkPkgsUnstable hostSystem;
           omarchyShell = mkOmarchyShell { inherit pkgs pkgsUnstable; };
           pinentryOmarchy = mkPinentryOmarchy { inherit pkgs omarchyShell; };
+          opencode2 = mkOpencode2 pkgs;
         in
         {
           # Stable Nixpkgs still carries the legacy DMS module. Import the
@@ -112,7 +115,7 @@
           # Keep unstable use visible in each module instead of hiding it in an
           # overlay. `omarchyShell` is built against the same Hyprland package.
           _module.args = {
-            inherit omarchyShell pinentryOmarchy pkgsUnstable;
+            inherit omarchyShell opencode2 pinentryOmarchy pkgsUnstable;
             dotfiles = inputs.dotfiles;
           };
         };

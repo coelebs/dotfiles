@@ -1,7 +1,7 @@
 # This module owns the primary user's portable configuration. Native Home
 # Manager options generate Bash while files that need their own format remain
 # sourced from the repository root.
-{ dotfiles, lib, omarchyShell, pinentryOmarchy, pkgs, pkgsUnstable, primaryUser, ... }:
+{ dotfiles, lib, omarchyShell, opencode2, pinentryOmarchy, pkgs, pkgsUnstable, primaryUser, ... }:
 
 {
   imports = [ ./shell.nix ./tmux.nix ];
@@ -38,6 +38,7 @@
       stylua
       unzip
       pkgsUnstable.opencode
+      opencode2
       pinentryOmarchy
       rbw
     ];

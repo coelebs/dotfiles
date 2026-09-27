@@ -4,7 +4,7 @@
 { dotfiles, lib, omarchyShell, opencode2, pinentryOmarchy, pkgs, pkgsUnstable, primaryUser, ... }:
 
 {
-  imports = [ ./shell.nix ./tmux.nix ];
+  imports = [ ./shell.nix ./tmux.nix ./neovim.nix ];
 
   home = {
     username = primaryUser;
@@ -29,9 +29,7 @@
       })
       ghostty
       htop
-      lua-language-server
       nchat
-      neovim
       rapid-photo-downloader
       ripgrep
       stylua
@@ -82,7 +80,6 @@
     ".local/bin".source = dotfiles + "/bin/.local/bin";
   };
 
-  xdg.configFile."nvim".source = dotfiles + "/nvim/.config/nvim";
   xdg.configFile."omarchy/hooks/theme-set.d/aerc-theme-omarchy" = {
     source = dotfiles + "/bin/.local/bin/aerc-theme-omarchy";
     executable = true;

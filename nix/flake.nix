@@ -87,6 +87,7 @@
         {
           omarchy-shell = omarchyShell;
           pinentry-omarchy = mkPinentryOmarchy { inherit pkgs omarchyShell; };
+          nixos-switch = pkgs.callPackage ./packages/nixos-switch.nix { };
           opencode2 = mkOpencode2 pkgs;
         };
 
@@ -119,6 +120,10 @@
             dotfiles = inputs.dotfiles;
           };
         };
+
+      # Opt in per host: private checkout locations are configuration, never
+      # part of the public command or widget package.
+      nixosModules."nixos-switch" = import ./modules/nixos/nixos-switch.nix;
 
       # The current laptop is deliberately composed using the same public
       # module interface that the future private wrapper flake will use.

@@ -85,6 +85,8 @@ let
       hl.exec_cmd("dbus-update-activation-environment --systemd --all")
       hl.exec_cmd("omarchy-theme-set-gnome")
       hl.exec_cmd("QT_PLUGIN_PATH=${qtImageFormatsPath}:$QT_PLUGIN_PATH omarchy-launch-shell")
+      -- Run user hooks after the desktop has started, as upstream Omarchy does.
+      hl.exec_cmd("sleep 2 && omarchy-hook post-boot")
       hl.exec_cmd(o.launch("udiskie --automount --no-notify --no-tray"))
     end)
   '';

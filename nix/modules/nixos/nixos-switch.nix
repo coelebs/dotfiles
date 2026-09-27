@@ -18,7 +18,7 @@ let
     '';
   };
   ensureWidget = pkgs.writeShellScript "ensure-nixos-switch-widget" ''
-    export PATH=${lib.makeBinPath [ omarchyShell pkgs.jq pkgs.coreutils ]}:"$PATH"
+    export PATH=${lib.makeBinPath [ omarchyShell pkgs.coreutils ]}:"$PATH"
     exec ${application}/libexec/nixos-switch/ensure-widget
   '';
 in

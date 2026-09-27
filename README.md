@@ -60,4 +60,4 @@ Home Manager installs the plugin files and an Omarchy hook, but does not own
 the post-boot hook handles first installs without a running shell, and the
 post-update hook restores it after Omarchy updates. All use `omarchy bar put`,
 which leaves user-reordered widgets in place and tolerates changed upstream
-neighbors. The old `vin.nixos-switch` layout entry is removed when present.
+neighbors.

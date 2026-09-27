@@ -1,5 +1,9 @@
 # NixOS Flake And Omarchy Shell Plan
 
+Historical migration plan: the host configuration now lives in the private
+`~/Projects/machine` flake. This repository exports the reusable workstation
+module and packages, not `nixosConfigurations.nixos`.
+
 ## Goal
 
 Move the existing channel-based NixOS configuration in `nix/nixos/` to a flake while preserving current behavior. Replace the modified Omarchy checkout with an upstream-pinned Omarchy source input and a downstream Nix package that supplies only the Omarchy shell runtime.
@@ -53,7 +57,8 @@ Retain the existing unstable package set and all current options unchanged, incl
 Build the flake before changing the running system:
 
 ```bash
-sudo nixos-rebuild build --flake ~/Projects/dotfiles/nix#nixos
+sudo nixos-rebuild build --flake ~/Projects/machine#nixos \
+  --override-input dotfiles "path:$HOME/Projects/dotfiles?dir=nix"
 ```
 
 Confirm the resulting closure contains the current DMS greeter, unstable Hyprland and portal, existing boot configuration, services, and packages. Only after a successful build, switch using the flake. Keep the previous boot generation as a rollback option.
@@ -131,7 +136,8 @@ Use the flake lockfile to update Omarchy:
 
 ```bash
 nix flake update omarchy
-sudo nixos-rebuild build --flake ~/Projects/dotfiles/nix#nixos
+sudo nixos-rebuild build --flake ~/Projects/machine#nixos \
+  --override-input dotfiles "path:$HOME/Projects/dotfiles?dir=nix"
 ```
 
 Review the Omarchy input diff and build result before switching. The Omarchy checkout remains useful for exploration or upstream contributions, but it is no longer required to run the desktop.

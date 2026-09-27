@@ -27,7 +27,6 @@
           wrapProgram $out/bin/darktable --set XCURSOR_SIZE 38
         '';
       })
-      git
       ghostty
       htop
       lua-language-server
@@ -37,11 +36,43 @@
       ripgrep
       stylua
       unzip
+      # Not available in the pinned stable Nixpkgs release.
+      pkgsUnstable.tuicr
       pkgsUnstable.opencode
       opencode2
       pinentryOmarchy
       rbw
     ];
+  };
+
+  programs.git = {
+    enable = true;
+    settings = {
+      user = {
+        name = "Vincent Kriek";
+        email = "vincent@coelebs.dev";
+      };
+      alias.lg = "log --graph --oneline --decorate --all";
+      init.defaultBranch = "master";
+      pull.rebase = true;
+      push = {
+        default = "current";
+        autoSetupRemote = true;
+      };
+      diff = {
+        algorithm = "histogram";
+        colorMoved = "plain";
+        mnemonicPrefix = true;
+      };
+      commit.verbose = true;
+      column.ui = "auto";
+      branch.sort = "-committerdate";
+      tag.sort = "-version:refname";
+      rerere = {
+        enabled = true;
+        autoupdate = true;
+      };
+    };
   };
 
   # `dotfiles` is the repository root source input. Home Manager owns these

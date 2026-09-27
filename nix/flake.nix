@@ -1,16 +1,9 @@
 {
-  # This flake is the public entry point for reusable workstation configuration.
-  # It owns dependency pins, exports a workstation module, and composes the
-  # current machine from that module and its machine-specific host definition.
   description = "Vin's reusable NixOS workstation configuration";
 
   inputs = {
-    # The system always evaluates from a stable NixOS release. The lock file,
-    # rather than this branch name, pins the exact revision used for builds.
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
 
-    # This is intentionally a separate, explicit package set. Modules receive
-    # it as `pkgsUnstable` and may use it only for documented exceptions.
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     nixos-hardware = {
@@ -18,23 +11,17 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Home Manager shares the stable package set with NixOS. It owns files and
-    # packages in the primary user's home directory, not system services.
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # The flake lives in nix/, while the deployable dotfile trees live at the
-    # repository root. Keep that source explicit so pure flake evaluation can
-    # include them without copying or rewriting the established Stow layout.
+    # TODO move away from needing this
     dotfiles = {
       url = "path:..";
       flake = false;
     };
 
-    # Omarchy is source data, not a Nix flake. The local package definition
-    # below builds the NixOS-compatible runtime from this locked source.
     omarchy = {
       url = "github:omacom/omarchy";
       flake = false;
@@ -49,7 +36,7 @@
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, omarchy, pinentry-omarchy, ... }:
+  outputs = inputs@{ nixpkgs, omarchy, pinentry-omarchy, ... }:
     let
       system = "x86_64-linux";
 
@@ -91,8 +78,8 @@
           opencode2 = mkOpencode2 pkgs;
         };
 
-      # This is the interface a future private host flake will consume. It
-      # captures the flake inputs so callers only import one workstation module.
+      # The private machine flake consumes this module. It captures the flake
+      # inputs so callers only import one workstation module.
       nixosModules.workstation = { pkgs, ... }:
         let
           hostSystem = pkgs.stdenv.hostPlatform.system;
@@ -125,15 +112,9 @@
       # part of the public command or widget package.
       nixosModules."nixos-switch" = import ./modules/nixos/nixos-switch.nix;
 
-      # The current laptop is deliberately composed using the same public
-      # module interface that the future private wrapper flake will use.
-      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-        inherit system;
-        modules = [
-          self.nixosModules.workstation
-          "${inputs.nixos-hardware}/framework/13-inch/intel-core-ultra-series3"
-          ./hosts/nixos
-        ];
-      };
+      # Host-specific hardware belongs in the host's module list, not in the
+      # reusable workstation module.
+      nixosModules."framework-13" =
+        import "${inputs.nixos-hardware}/framework/13-inch/intel-core-ultra-series3";
     };
 }

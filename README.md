@@ -14,10 +14,12 @@ The source files retain their existing Stow-style layout at the repository
 root, but Home Manager deploys them. Do not run Stow for those targets after
 the first Home Manager activation.
 
-Apply the configuration with:
+Apply the configuration from the private machine flake, overriding its pinned
+dotfiles input with this checkout to include local changes:
 
 ```sh
-sudo nixos-rebuild switch --flake ~/Projects/dotfiles/nix#nixos
+sudo nixos-rebuild switch --flake ~/Projects/machine#nixos \
+  --override-input dotfiles "path:$HOME/Projects/dotfiles?dir=nix"
 ```
 
 On the first activation, existing conflicting Stow links are renamed with the
@@ -36,7 +38,7 @@ then configure it in the host module:
 
 ```nix
 # flake.nix (dotfiles is an input)
-modules = [ dotfiles.nixosModules.workstation dotfiles.nixosModules."nixos-switch" ./hosts/nixos ];
+modules = [ dotfiles.nixosModules.workstation dotfiles.nixosModules."framework-13" dotfiles.nixosModules."nixos-switch" ./hosts/nixos ];
 
 # hosts/nixos/default.nix
 {

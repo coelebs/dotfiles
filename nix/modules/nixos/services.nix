@@ -21,9 +21,6 @@
     };
   };
 
-  services.fprintd.enable = true;
-  security.pam.services.sudo.fprintAuth = true;
-
   # Omarchy's shell and lock screen rely on these desktop-wide services.
   security.polkit.enable = true;
   security.pam.services.omarchy-lock-password = { };

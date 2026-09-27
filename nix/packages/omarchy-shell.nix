@@ -131,6 +131,11 @@ stdenvNoCC.mkDerivation {
       mv "$command" "$out/libexec/omarchy/$command_name"
       makeWrapper "$out/libexec/omarchy/$command_name" "$out/bin/$command_name" --set-default OMARCHY_PATH "$out/share/omarchy" --prefix PATH : ${lib.escapeShellArg runtimePath}
     done < <(find "$out/share/omarchy/bin" -maxdepth 1 -type f -executable -name 'omarchy-*' -print)
+    # `source` runs code in the *current* shell. The PATH entry above is an
+    # executable wrapper (with `exec`), so sourcing it aborts omarchy-bar
+    # before `put` can run. Source the unwrapped helper directly instead.
+    substituteInPlace "$out/libexec/omarchy/omarchy-bar" \
+      --replace-fail 'source omarchy-shell-config' "source \"$out/libexec/omarchy/omarchy-shell-config\""
     substitute ${./omarchy-nix-init} "$out/bin/omarchy-nix-init" --replace-fail '@omarchyPath@' "$out/share/omarchy" --replace-fail '@legacyNixAutostart@' '${legacyNixAutostart}'
     chmod +x "$out/bin/omarchy-nix-init"
     patchShebangs "$out/bin/omarchy-nix-init"

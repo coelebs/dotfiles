@@ -14,6 +14,9 @@ let
       export NIXOS_SWITCH_MACHINE_FLAKE=${lib.escapeShellArg cfg.machineFlake}
       export NIXOS_SWITCH_DOTFILES_CHECKOUT=${lib.escapeShellArg cfg.dotfilesCheckout}
       export NIXOS_SWITCH_CONFIGURATION=${lib.escapeShellArg cfg.configuration}
+      # Desktop sessions can have an older PATH than an interactive shell.
+      # In particular, notify-send is required to report graphical results.
+      export PATH=${lib.makeBinPath [ pkgs.libnotify pkgs.coreutils ]}:"$PATH"
       exec ${application}/bin/nixos-switch "$@"
     '';
   };

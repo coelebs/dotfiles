@@ -12,6 +12,8 @@
     extraConfig = ''
        set -ga terminal-overrides ",xterm-256color*:Tc,kitty:Tc"
        set -g status-style 'bg=default,fg=default'
+       # Apply the current Omarchy palette when a tmux server starts, too.
+       run-shell -b '~/.config/omarchy/hooks/theme-set.d/tmux-theme-omarchy'
       set -g focus-events on
 
       bind r source-file ~/.config/tmux/tmux.conf
@@ -81,11 +83,15 @@
         exit 0
       fi
 
-      background=$(color background)
-      foreground=$(color foreground)
-      printf 'server_pid=%s background=%s foreground=%s\n' \
-        "$server_pid" "$background" "$foreground"
+      background=$(color lighter_background)
+      foreground=$(color light_foreground)
+      accent=$(color accent)
+      printf 'server_pid=%s background=%s foreground=%s accent=%s\n' \
+        "$server_pid" "$background" "$foreground" "$accent"
       $tmux set-option -g status-style "bg=$background,fg=$foreground"
+      $tmux set-option -g status-left "#[fg=$accent][#{session_name}]#[fg=$foreground] "
+      $tmux set-option -gw window-status-format "#[fg=$foreground]#I#[fg=$accent]:#W#{?window_flags,#{window_flags}, }"
+      $tmux set-option -gw window-status-current-format "#[fg=$foreground]#I#[fg=$accent]:#W#{?window_flags,#{window_flags}, }"
       $tmux set-option -gu window-style
       $tmux set-option -gu window-active-style
       $tmux set-option -gu pane-border-style

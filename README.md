@@ -44,7 +44,6 @@ it differs from the existing `/opt/gcc-arm-none-eabi-9-2020-q2-update/bin/arm-no
 The override is used only if that executable exists.
 
 TODO: Revisit calling OpenCode from Neovim once the integration works reliably.
-TODO: Fix Telescope picker styling to match the active Omarchy theme, including after theme changes.
 
 ## NixOS switch for Omarchy
 

@@ -36,6 +36,28 @@ local function read_palette()
 end
 
 local last_palette
+local function style_telescope(colors)
+  local background = colors.background
+  local border = colors.muted or colors.dark_foreground or colors.foreground
+  local title = colors.dark_foreground or colors.muted or colors.foreground
+
+  vim.api.nvim_set_hl(0, 'TelescopeNormal', { fg = colors.foreground, bg = background })
+  vim.api.nvim_set_hl(0, 'TelescopeBorder', { fg = border, bg = background })
+  for _, section in ipairs({ 'Prompt', 'Results', 'Preview' }) do
+    vim.api.nvim_set_hl(
+      0,
+      'Telescope' .. section .. 'Normal',
+      { fg = colors.foreground, bg = background }
+    )
+    vim.api.nvim_set_hl(0, 'Telescope' .. section .. 'Border', { fg = border, bg = background })
+    vim.api.nvim_set_hl(0, 'Telescope' .. section .. 'Title', { fg = title, bg = background })
+  end
+  vim.api.nvim_set_hl(0, 'TelescopeSelection', {
+    fg = colors.foreground,
+    bg = colors.selection or colors.lighter_background or background,
+  })
+end
+
 local function apply()
   local colors = read_palette()
   if not colors then
@@ -69,6 +91,7 @@ local function apply()
   -- Plugins such as lualine recompute their own highlights on ColorScheme.
   vim.g.colors_name = 'omarchy'
   vim.api.nvim_exec_autocmds('ColorScheme', { pattern = 'omarchy' })
+  style_telescope(colors)
   last_palette = fingerprint
 end
 

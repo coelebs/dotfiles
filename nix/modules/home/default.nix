@@ -17,7 +17,6 @@
       aerc
       bambu-studio
       calibre
-      codex
       digikam
       (symlinkJoin {
         name = "darktable";
@@ -35,9 +34,10 @@
       ripgrep
       stylua
       unzip
-      # Not available in the pinned stable Nixpkgs release.
+      # Use the pinned unstable Nixpkgs for these tools.
       pkgsUnstable.tuicr
       pkgsUnstable.opencode
+      pkgsUnstable.codex
       opencode2
       rbw
     ]) ++ [ pinentryOmarchy ];

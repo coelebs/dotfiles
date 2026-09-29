@@ -29,6 +29,7 @@
       })
       ghostty
       htop
+      mpv
       nchat
       rapid-photo-downloader
       ripgrep
@@ -133,6 +134,16 @@
     terminal = false;
     categories = [ "Office" "Viewer" ];
     mimeType = [ "application/epub+zip" "application/x-mobipocket-ebook" ];
+  };
+
+  # The Nix package provides the executable but no .desktop file.
+  xdg.desktopEntries."rapid-photo-downloader" = {
+    name = "Rapid Photo Downloader";
+    genericName = "Photo and video downloader";
+    exec = "${pkgs.rapid-photo-downloader}/bin/rapid-photo-downloader";
+    icon = "camera-photo";
+    terminal = false;
+    categories = [ "Graphics" "Photography" ];
   };
 
 }

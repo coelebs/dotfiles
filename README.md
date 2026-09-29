@@ -15,6 +15,7 @@ repository root, but Home Manager deploys them. Neovim's configuration instead
 lives in `nix/modules/home/neovim.nix` and `nix/modules/home/neovim/`. Do not
 run Stow for those targets after the first Home Manager activation.
 
+On NixOS, Home Manager is part of the private machine's `nixos-switch` rebuild.
 Apply the configuration from the private machine flake, overriding its pinned
 dotfiles input with this checkout to include local changes:
 
@@ -22,6 +23,26 @@ dotfiles input with this checkout to include local changes:
 sudo nixos-rebuild switch --flake ~/Projects/machine#nixos \
   --override-input dotfiles "path:$HOME/Projects/dotfiles?dir=nix"
 ```
+
+## Omarchy on Arch
+
+The same Home Manager modules can run without NixOS on the Arch work laptop.
+After installing Nix with flakes enabled, run as `vin` (without `sudo`):
+
+```sh
+nix run github:nix-community/home-manager/release-26.05 -- switch \
+  --flake "path:$HOME/Projects/dotfiles?dir=nix#vin" \
+  -b before-home-manager
+```
+
+This uses `nix.homeConfigurations.vin` and does **not** use the private machine
+flake or run `nixos-rebuild`. The NixOS switch still activates Home Manager as
+before. On Arch the pinentry plugin uses the installed Omarchy shell rather
+than the NixOS-packaged shell; Home Manager also sets rbw's pinentry path when
+Omarchy is available. Neither setting needs your rbw account email or secrets.
+Home Manager takes ownership of the dotfile targets listed above, so check for
+existing files or Stow links on the laptop before switching. The `-b` flag
+backs up conflicts.
 
 On the first activation, existing conflicting Stow links are renamed with the
 `before-home-manager` suffix rather than deleted. Verify the new links work,

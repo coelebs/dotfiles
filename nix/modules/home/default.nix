@@ -1,7 +1,7 @@
 # This module owns the primary user's portable configuration. Native Home
 # Manager options generate Bash while files that need their own format remain
 # sourced from the repository root.
-{ dotfiles, lib, omarchyShell, opencode2, pinentryOmarchy, pkgs, pkgsUnstable, primaryUser, ... }:
+{ dotfiles, lib, omarchyShell ? null, opencode2, pinentryOmarchy, pkgs, pkgsUnstable, primaryUser, onNixOS ? true, ... }:
 
 {
   imports = [ ./shell.nix ./tmux.nix ./neovim.nix ];
@@ -13,7 +13,7 @@
     # Update only when deliberately adopting Home Manager behavior changes.
     stateVersion = "26.05";
 
-    packages = with pkgs; [
+    packages = (with pkgs; [
       aerc
       bambu-studio
       calibre
@@ -39,9 +39,8 @@
       pkgsUnstable.tuicr
       pkgsUnstable.opencode
       opencode2
-      pinentryOmarchy
       rbw
-    ];
+    ]) ++ [ pinentryOmarchy ];
   };
 
   programs.git = {
@@ -86,44 +85,57 @@
     executable = true;
     force = true;
   };
-  xdg.configFile."omarchy/plugins/coelebs.pinentry".source = "${pinentryOmarchy}/share/omarchy/plugins/coelebs.pinentry";
+  xdg.configFile."omarchy/plugins/coelebs.pinentry" = {
+    source = "${pinentryOmarchy}/share/omarchy/plugins/coelebs.pinentry";
+  };
 
   home.activation.enableOmarchyPinentry = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    ${omarchyShell}/bin/omarchy-shell shell setPluginEnabled vin.pinentry false >/dev/null 2>&1 || true
-    # Prefer Omarchy's own IPC: it enables the plugin in the running shell and
-    # persists the entry to shell.json in one step.
-    if ${omarchyShell}/bin/omarchy-shell shell enablePlugin coelebs.pinentry true >/dev/null 2>&1; then
-      enabled=1
-    else
-      enabled=0
-    fi
-    # Fallback for a fresh machine where the shell is not running yet.
-    if [[ $enabled -eq 0 ]]; then
-      state="$HOME/.config/omarchy/shell.json"
-      if [[ ! -f $state ]]; then
-        install -Dm644 "${omarchyShell}/share/omarchy/config/omarchy/shell.json" "$state"
+    # Arch may not have Omarchy installed yet. In that case, leave rbw's
+    # existing pinentry setting alone; the plugin link can wait until later.
+    shell=${if onNixOS then "${omarchyShell}/bin/omarchy-shell" else "omarchy-shell"}
+    if command -v "$shell" >/dev/null 2>&1; then
+      "$shell" shell setPluginEnabled vin.pinentry false >/dev/null 2>&1 || true
+      "$shell" shell rescanPlugins >/dev/null 2>&1 || true
+      # Prefer Omarchy's own IPC: it enables the plugin in the running shell and
+      # persists the entry to shell.json in one step.
+      if "$shell" shell enablePlugin coelebs.pinentry true >/dev/null 2>&1; then
+        enabled=1
+      else
+        enabled=0
       fi
-      temporary=$(mktemp "$state.XXXXXX")
-      ${pkgs.jq}/bin/jq '
+      # Fallback for a fresh machine where the shell is not running yet.
+      if [[ $enabled -eq 0 ]]; then
+        state="$HOME/.config/omarchy/shell.json"
+        if [[ ! -f $state ]]; then
+          default_state=${if onNixOS then "${omarchyShell}/share/omarchy/config/omarchy/shell.json" else "/usr/share/omarchy/config/omarchy/shell.json"}
+          if [[ -f $default_state ]]; then
+            install -Dm644 "$default_state" "$state"
+          fi
+        fi
+        if [[ -f $state ]]; then
+          temporary=$(mktemp "$state.XXXXXX")
+          ${pkgs.jq}/bin/jq '
         .plugins = ((.plugins // []) | if type == "array" then . else [] end
           | map(select(.id != "vin.pinentry"))
           | if any(.[]; .id == "coelebs.pinentry") then . else . + [{ "id": "coelebs.pinentry" }] end)
-      ' "$state" > "$temporary"
-      mv "$temporary" "$state"
-    fi
-    # Drop the legacy vin.pinentry entry from shell.json when the IPC route
-    # succeeded; jq still runs in the fallback branch above.
-    state="$HOME/.config/omarchy/shell.json"
-    if [[ -f $state ]]; then
-      temporary=$(mktemp "$state.XXXXXX")
-      ${pkgs.jq}/bin/jq '
+          ' "$state" > "$temporary"
+          mv "$temporary" "$state"
+        fi
+      fi
+      # Drop the legacy vin.pinentry entry from shell.json when the IPC route
+      # succeeded; jq still runs in the fallback branch above.
+      state="$HOME/.config/omarchy/shell.json"
+      if [[ -f $state ]]; then
+        temporary=$(mktemp "$state.XXXXXX")
+        ${pkgs.jq}/bin/jq '
         if type == "object" and (.plugins // null | type == "array") then
           .plugins |= map(select(.id != "vin.pinentry"))
         else . end
-      ' "$state" > "$temporary"
-      mv "$temporary" "$state"
+        ' "$state" > "$temporary"
+        mv "$temporary" "$state"
+      fi
+      ${pkgs.rbw}/bin/rbw config set pinentry "${pinentryOmarchy}/bin/pinentry-omarchy"
     fi
-    ${pkgs.rbw}/bin/rbw config set pinentry "${pinentryOmarchy}/bin/pinentry-omarchy"
   '';
   # Calibre persists this library choice in its writable preferences.
   xdg.desktopEntries."calibre-gui" = {

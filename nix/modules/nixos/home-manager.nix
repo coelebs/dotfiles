@@ -18,6 +18,7 @@ in
 
     extraSpecialArgs = {
       inherit omarchyShell opencode2 pinentryOmarchy pkgsUnstable primaryUser;
+      onNixOS = true;
       inherit dotfiles;
     };
 

@@ -7,7 +7,7 @@
 , bash
 , coreutils
 , jq
-, omarchyShell
+, omarchyShell ? null
   # The pinentry-omarchy checkout (flake input `pinentry-omarchy`).
 , src
 }:
@@ -29,8 +29,10 @@ stdenvNoCC.mkDerivation {
   installPhase = ''
     install -Dm755 ${src}/bin/pinentry-omarchy "$out/bin/.pinentry-omarchy-unwrapped"
     install -Dm755 ${src}/bin/pinentry-omarchy-reply "$out/bin/pinentry-omarchy-reply"
+    # On Arch, use the Omarchy shell already installed by the distribution.
+    # NixOS supplies its packaged shell explicitly instead.
     makeWrapper "$out/bin/.pinentry-omarchy-unwrapped" "$out/bin/pinentry-omarchy" \
-      --prefix PATH : ${lib.escapeShellArg (lib.makeBinPath [ bash coreutils jq omarchyShell ])}
+      --prefix PATH : ${lib.escapeShellArg (lib.makeBinPath ([ bash coreutils jq ] ++ lib.optional (omarchyShell != null) omarchyShell))}
     install -Dm644 ${src}/manifest.json "$out/share/omarchy/plugins/coelebs.pinentry/manifest.json"
     install -Dm644 ${src}/Panel.qml "$out/share/omarchy/plugins/coelebs.pinentry/Panel.qml"
   '';

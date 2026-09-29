@@ -51,7 +51,7 @@
           src = omarchy;
           hyprland = pkgsUnstable.hyprland;
         };
-      mkPinentryOmarchy = { pkgs, omarchyShell }:
+      mkPinentryOmarchy = { pkgs, omarchyShell ? null }:
         pkgs.callPackage ./packages/pinentry-omarchy.nix {
           inherit omarchyShell;
           src = pinentry-omarchy;
@@ -59,6 +59,29 @@
       mkOpencode2 = pkgs: pkgs.callPackage ./packages/opencode2.nix { };
     in
     {
+      # Standalone Home Manager for Omarchy on Arch. The NixOS workstation
+      # still imports the same home module through its NixOS integration.
+      homeConfigurations.vin =
+        let
+          pkgs = import nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+          };
+        in
+        inputs.home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [ ./modules/home/default.nix ];
+          extraSpecialArgs = {
+            primaryUser = "vin";
+            dotfiles = inputs.dotfiles;
+            pkgsUnstable = mkPkgsUnstable system;
+            opencode2 = mkOpencode2 pkgs;
+            omarchyShell = null;
+            pinentryOmarchy = mkPinentryOmarchy { inherit pkgs; };
+            onNixOS = false;
+          };
+        };
+
       # Build the desktop runtime independently of a whole NixOS system.
       packages.${system} =
         let

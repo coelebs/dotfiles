@@ -48,7 +48,7 @@ On the first activation, existing conflicting Stow links are renamed with the
 `before-home-manager` suffix rather than deleted. Verify the new links work,
 then remove those backup links manually.
 
-Legacy i3, Sway, mail, and Zsh configurations remain in the repository but are
+Legacy i3, Sway, and Zsh configurations remain in the repository but are
 not enabled or managed by Home Manager yet.
 
 ## Neovim

@@ -1,7 +1,6 @@
 # This module owns the primary user's portable configuration. Native Home
-# Manager options generate Bash while files that need their own format remain
-# sourced from the repository root.
-{ dotfiles, lib, omarchyShell ? null, opencode2, pinentryOmarchy, pkgs, pkgsUnstable, primaryUser, workdeck, onNixOS ? true, ... }:
+# Manager options generate shell configuration; helper scripts live beside it.
+{ lib, omarchyShell ? null, opencode2, pinentryOmarchy, pkgs, pkgsUnstable, primaryUser, workdeck, onNixOS ? true, ... }:
 
 {
   imports = [ ./shell.nix ./tmux.nix ./neovim.nix ];
@@ -73,15 +72,13 @@
     };
   };
 
-  # `dotfiles` is the repository root source input. Home Manager owns these
-  # Stow targets after activation. `force` replaces only the old Stow links;
-  # their source files remain in this repository.
+  # Home Manager deploys the portable helper scripts.
   home.file = {
-    ".local/bin".source = dotfiles + "/bin/.local/bin";
+    ".local/bin".source = ./bin;
   };
 
   xdg.configFile."omarchy/hooks/theme-set.d/aerc-theme-omarchy" = {
-    source = dotfiles + "/bin/.local/bin/aerc-theme-omarchy";
+    source = ./bin/aerc-theme-omarchy;
     executable = true;
     force = true;
   };

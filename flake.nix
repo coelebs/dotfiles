@@ -16,12 +16,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # TODO move away from needing this
-    dotfiles = {
-      url = "path:..";
-      flake = false;
-    };
-
     omarchy = {
       url = "github:omacom/omarchy";
       flake = false;
@@ -79,7 +73,6 @@
           modules = [ ./modules/home/default.nix ];
           extraSpecialArgs = {
             primaryUser = "vin";
-            dotfiles = inputs.dotfiles;
             pkgsUnstable = mkPkgsUnstable system;
             opencode2 = mkOpencode2 pkgs;
             workdeck = inputs.workdeck.packages.${system}.default;
@@ -136,7 +129,6 @@
           # overlay. `omarchyShell` is built against the same Hyprland package.
           _module.args = {
             inherit omarchyShell opencode2 pinentryOmarchy pkgsUnstable workdeck;
-            dotfiles = inputs.dotfiles;
           };
         };
 

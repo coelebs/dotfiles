@@ -58,7 +58,7 @@ Build the flake before changing the running system:
 
 ```bash
 sudo nixos-rebuild build --flake ~/Projects/machine#nixos \
-  --override-input dotfiles "path:$HOME/Projects/dotfiles?dir=nix"
+  --override-input dotfiles "path:$HOME/Projects/dotfiles"
 ```
 
 Confirm the resulting closure contains the current DMS greeter, unstable Hyprland and portal, existing boot configuration, services, and packages. Only after a successful build, switch using the flake. Keep the previous boot generation as a rollback option.
@@ -137,7 +137,7 @@ Use the flake lockfile to update Omarchy:
 ```bash
 nix flake update omarchy
 sudo nixos-rebuild build --flake ~/Projects/machine#nixos \
-  --override-input dotfiles "path:$HOME/Projects/dotfiles?dir=nix"
+  --override-input dotfiles "path:$HOME/Projects/dotfiles"
 ```
 
 Review the Omarchy input diff and build result before switching. The Omarchy checkout remains useful for exploration or upstream contributions, but it is no longer required to run the desktop.

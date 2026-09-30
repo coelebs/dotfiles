@@ -38,7 +38,7 @@ in
       type = lib.types.str;
       default = "";
       example = "/home/vin/Projects/dotfiles";
-      description = "Absolute location of the live dotfiles checkout containing nix/flake.nix.";
+      description = "Absolute location of the live dotfiles checkout containing flake.nix.";
     };
     configuration = lib.mkOption {
       type = lib.types.str;

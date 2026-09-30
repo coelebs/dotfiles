@@ -21,8 +21,8 @@ if [ ! -d "$machine_dir" ] || [ ! -f "$machine_dir/flake.nix" ]; then
   printf 'nixos-switch: no flake at %s\n' "$machine_dir" >&2
   exit 1
 fi
-if [ ! -f "$dotfiles_dir/nix/flake.nix" ]; then
-  printf 'nixos-switch: no dotfiles/nix flake at %s\n' "$dotfiles_dir" >&2
+if [ ! -f "$dotfiles_dir/flake.nix" ]; then
+  printf 'nixos-switch: no dotfiles flake at %s\n' "$dotfiles_dir" >&2
   exit 1
 fi
 
@@ -30,7 +30,7 @@ fi
 # nixos-rebuild. Do not run the graphical prompt when called from a terminal.
 rebuild=$(command -v nixos-rebuild)
 set -- "$rebuild" switch --flake "$machine_dir#$configuration" \
-  --override-input dotfiles "path:$dotfiles_dir?dir=nix"
+  --override-input dotfiles "path:$dotfiles_dir"
 
 state_dir=${XDG_RUNTIME_DIR:-/run/user/$(id -u)}
 state_file=$state_dir/nixos-switch.pid

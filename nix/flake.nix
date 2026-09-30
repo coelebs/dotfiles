@@ -35,10 +35,9 @@
       flake = false;
     };
 
-    # Build the local Go program as a package, rather than relying on a
-    # manually compiled binary in the checkout.
+    # Fetch and build the lock-pinned Go program without a local checkout.
     workdeck = {
-      url = "path:/home/vin/Projects/workdeck";
+      url = "github:coelebs/workdeck";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

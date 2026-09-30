@@ -136,14 +136,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1790753861,
-        "narHash": "sha256-8M9Giy09CcPEH1Vh8k15sPN/LGHO2i9qDD9Zd2PtDpI=",
-        "path": "/home/vin/Projects/workdeck",
-        "type": "path"
+        "lastModified": 1790755086,
+        "narHash": "sha256-VDjB7XJ/U7jCJZyDvzOPPaedd5OUD/0uvc3PnFMip+U=",
+        "owner": "coelebs",
+        "repo": "workdeck",
+        "rev": "7c653f063a28a83f9aaae1e2045a3ffa5c703270",
+        "type": "github"
       },
       "original": {
-        "path": "/home/vin/Projects/workdeck",
-        "type": "path"
+        "owner": "coelebs",
+        "repo": "workdeck",
+        "type": "github"
       }
     }
   },

@@ -1,7 +1,7 @@
 # This module owns the primary user's portable configuration. Native Home
 # Manager options generate Bash while files that need their own format remain
 # sourced from the repository root.
-{ dotfiles, lib, omarchyShell ? null, opencode2, pinentryOmarchy, pkgs, pkgsUnstable, primaryUser, onNixOS ? true, ... }:
+{ dotfiles, lib, omarchyShell ? null, opencode2, pinentryOmarchy, pkgs, pkgsUnstable, primaryUser, workdeck, onNixOS ? true, ... }:
 
 {
   imports = [ ./shell.nix ./tmux.nix ./neovim.nix ];
@@ -40,7 +40,7 @@
       pkgsUnstable.codex
       opencode2
       rbw
-    ]) ++ [ pinentryOmarchy ];
+    ]) ++ [ pinentryOmarchy workdeck ];
   };
 
   programs.git = {

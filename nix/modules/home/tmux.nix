@@ -38,7 +38,7 @@
       set-option -g repeat-time 0
 
       set -g status-left-length 40
-      bind-key -n C-f new-window "tmux-sessionizer"
+      bind-key -n C-f new-window "workdeck"
 
       # Start new splits in the active pane's working directory.
       bind '"' split-window -v -c '#{pane_current_path}'

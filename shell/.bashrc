@@ -31,7 +31,7 @@ export LESS_TERMCAP_so=$'\e[1;44;33m'
 export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[1;32m'
 
-bind '"\C-f":"tmux-sessionizer\n"'
+bind '"\C-f":"workdeck\n"'
 
 if command -v starship >/dev/null 2>&1; then
   eval "$(starship init bash)"

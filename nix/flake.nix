@@ -34,6 +34,13 @@
       url = "github:coelebs/pinentry-omarchy";
       flake = false;
     };
+
+    # Build the local Go program as a package, rather than relying on a
+    # manually compiled binary in the checkout.
+    workdeck = {
+      url = "path:/home/vin/Projects/workdeck";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs@{ nixpkgs, omarchy, pinentry-omarchy, ... }:
@@ -76,6 +83,7 @@
             dotfiles = inputs.dotfiles;
             pkgsUnstable = mkPkgsUnstable system;
             opencode2 = mkOpencode2 pkgs;
+            workdeck = inputs.workdeck.packages.${system}.default;
             omarchyShell = null;
             pinentryOmarchy = mkPinentryOmarchy { inherit pkgs; };
             onNixOS = false;
@@ -99,6 +107,7 @@
           pinentry-omarchy = mkPinentryOmarchy { inherit pkgs omarchyShell; };
           nixos-switch = pkgs.callPackage ./packages/nixos-switch.nix { };
           opencode2 = mkOpencode2 pkgs;
+          workdeck = inputs.workdeck.packages.${system}.default;
         };
 
       # The private machine flake consumes this module. It captures the flake
@@ -110,6 +119,7 @@
           omarchyShell = mkOmarchyShell { inherit pkgs pkgsUnstable; };
           pinentryOmarchy = mkPinentryOmarchy { inherit pkgs omarchyShell; };
           opencode2 = mkOpencode2 pkgs;
+          workdeck = inputs.workdeck.packages.${hostSystem}.default;
         in
         {
           # Stable Nixpkgs still carries the legacy DMS module. Import the
@@ -126,7 +136,7 @@
           # Keep unstable use visible in each module instead of hiding it in an
           # overlay. `omarchyShell` is built against the same Hyprland package.
           _module.args = {
-            inherit omarchyShell opencode2 pinentryOmarchy pkgsUnstable;
+            inherit omarchyShell opencode2 pinentryOmarchy pkgsUnstable workdeck;
             dotfiles = inputs.dotfiles;
           };
         };

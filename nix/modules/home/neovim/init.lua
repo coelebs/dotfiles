@@ -57,7 +57,7 @@ map('n', '<C-u>', '<C-u>zz')
 map('n', '<C-d>', '<C-d>zz')
 map('v', 'J', ":m '>+1<cr>gv=gv")
 map('v', 'K', ":m '<-2<cr>gv=gv")
-map('n', '<C-f>', '<cmd>silent !tmux neww tmux-sessionizer<cr>')
+map('n', '<C-f>', '<cmd>silent !tmux neww workdeck<cr>')
 map('n', '<leader>dd', ':r!date<cr>')
 
 require('user.theme').setup()

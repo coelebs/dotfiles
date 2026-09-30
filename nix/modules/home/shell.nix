@@ -49,7 +49,7 @@
     };
     setOptions = [ "NO_BEEP" "NO_HIST_VERIFY" ];
     initContent = ''
-      bindkey -s '^F' 'tmux-sessionizer\n'
+      bindkey -s '^F' 'workdeck\n'
 
       cdhh() {
         local directory

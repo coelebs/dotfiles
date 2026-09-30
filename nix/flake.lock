@@ -125,7 +125,25 @@
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "omarchy": "omarchy",
-        "pinentry-omarchy": "pinentry-omarchy"
+        "pinentry-omarchy": "pinentry-omarchy",
+        "workdeck": "workdeck"
+      }
+    },
+    "workdeck": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1790753861,
+        "narHash": "sha256-8M9Giy09CcPEH1Vh8k15sPN/LGHO2i9qDD9Zd2PtDpI=",
+        "path": "/home/vin/Projects/workdeck",
+        "type": "path"
+      },
+      "original": {
+        "path": "/home/vin/Projects/workdeck",
+        "type": "path"
       }
     }
   },

@@ -7,6 +7,8 @@
     packages = with pkgs; [
       bat
       dtc
+      eza
+      fd
       less
       openssh
     ];
@@ -14,6 +16,11 @@
     # Home Manager's session setup adds this before an interactive Zsh starts,
     # so the managed helper scripts remain available without editing PATH by hand.
     sessionPath = [ "$HOME/.local/bin" ];
+  };
+
+  programs.bash = {
+    enable = true;
+    shellAliases.find = "fd";
   };
 
   programs.zsh = {
@@ -36,7 +43,7 @@
       EDITOR = "nvim";
     };
     shellAliases = {
-      ls = "ls --color -lh --group-directories-first";
+      ls = "eza --color=always --long --group --group-directories-first";
       vim = "nvim";
       log = "nvim + ~/local/notes/log.md";
       cdh = ''cd "$(git rev-parse --show-toplevel)"'';

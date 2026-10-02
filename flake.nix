@@ -82,6 +82,27 @@
           };
         };
 
+      homeConfigurations.vincent =
+        let
+          pkgs = import nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+          };
+        in
+        inputs.home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [ ./modules/home/default.nix ];
+          extraSpecialArgs = {
+            primaryUser = "vincent";
+            pkgsUnstable = mkPkgsUnstable system;
+            opencode2 = mkOpencode2 pkgs;
+            workdeck = inputs.workdeck.packages.${system}.default;
+            omarchyShell = null;
+            pinentryOmarchy = mkPinentryOmarchy { inherit pkgs; };
+            onNixOS = false;
+          };
+        };
+
       # Build the desktop runtime independently of a whole NixOS system.
       packages.${system} =
         let

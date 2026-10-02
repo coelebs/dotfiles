@@ -77,7 +77,10 @@
 
   # Home Manager deploys the portable helper scripts.
   home.file = {
-    ".local/bin".source = ./bin;
+    ".local/bin" = {
+      source = ./bin;
+      recursive = true;
+    };
   };
 
   xdg.configFile."omarchy/hooks/theme-set.d/aerc-theme-omarchy" = {

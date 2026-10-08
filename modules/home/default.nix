@@ -3,7 +3,7 @@
 { lib, omarchyShell ? null, opencode2, pinentryOmarchy, pkgs, pkgsUnstable, primaryUser, workdeck, onNixOS ? true, ... }:
 
 {
-  imports = [ ./shell.nix ./tmux.nix ./neovim.nix ];
+  imports = [ ./shell.nix ./tmux.nix ./neovim.nix ./go.nix ];
 
   home = {
     username = primaryUser;
@@ -37,10 +37,13 @@
       pkgsUnstable.tuicr
       pkgsUnstable.opencode
       pkgsUnstable.codex
+      pkgsUnstable.t3code
       opencode2
       rbw
     ]) ++ [ pinentryOmarchy workdeck ];
   };
+
+  programs.home-manager.enable = !onNixOS;
 
   programs.git = {
     enable = true;

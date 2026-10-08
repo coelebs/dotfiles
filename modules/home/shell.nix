@@ -16,6 +16,7 @@
     # Home Manager's session setup adds this before an interactive Zsh starts,
     # so the managed helper scripts remain available without editing PATH by hand.
     sessionPath = [ "$HOME/.local/bin" ];
+
   };
 
   programs.bash = {

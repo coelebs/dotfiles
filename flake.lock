@@ -123,11 +123,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791452728,
-        "narHash": "sha256-HMLyhoHrDxWGEXdrBWcH3dAJsY5Nz0KYTeOgZBi/tlg=",
+        "lastModified": 1791452800,
+        "narHash": "sha256-dOZ4Bw6+73+UZmSUoPiyg2NrN3BgjeD1vkUVWu1a1GY=",
         "owner": "coelebs",
         "repo": "workdeck",
-        "rev": "d8ce2a586111f30b6c06a2a279bb5c06fea49294",
+        "rev": "23cf04955048e401508984f00cbd91883755f17e",
         "type": "github"
       },
       "original": {

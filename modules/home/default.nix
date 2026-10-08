@@ -43,7 +43,7 @@
     ]) ++ [ pinentryOmarchy workdeck ];
   };
 
-  programs.home-manager.enable = !onNixOS;
+  programs.home-manager.enable = true;
 
   programs.git = {
     enable = true;

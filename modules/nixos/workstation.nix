@@ -39,6 +39,7 @@
   # These NixOS options provide integration beyond installing the applications:
   # Firefox is system-enabled and LocalSend opens its required firewall ports.
   programs.firefox.enable = true;
+  programs.steam.enable = true;
   programs.localsend = {
     enable = true;
     openFirewall = true;

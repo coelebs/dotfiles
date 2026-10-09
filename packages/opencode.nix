@@ -1,12 +1,12 @@
 { autoPatchelfHook, fetchurl, lib, stdenv }:
 
 stdenv.mkDerivation (finalAttrs: {
-  pname = "opencode2";
-  version = "2.0.19";
+  pname = "opencode";
+  version = "2.0.26";
 
   src = fetchurl {
     url = "https://registry.npmjs.org/@opencode/cli-linux-x64/-/cli-linux-x64-${finalAttrs.version}.tgz";
-    hash = "sha256-EEHlpqy0slgXQGTZleo3XTv6qCFSrtPAlgiU5ljWJ+8=";
+    hash = "sha256-ChFuAzoCgEdB1GRDN9ASvfWiSqwzo0wMllNNLVOWERk=";
   };
 
   sourceRoot = "package";
@@ -17,21 +17,21 @@ stdenv.mkDerivation (finalAttrs: {
   installPhase = ''
     runHook preInstall
     # The Bun executable must retain its original basename to find its embedded app.
-    install -Dm755 bin/opencode "$out/libexec/opencode2/opencode"
+    install -Dm755 bin/opencode "$out/libexec/opencode/opencode"
     mkdir -p "$out/bin"
-    cat > "$out/bin/opencode2" <<EOF
+    cat > "$out/bin/opencode" <<EOF
     #!/bin/sh
-    exec "$out/libexec/opencode2/opencode" "\$@"
+    exec "$out/libexec/opencode/opencode" "\$@"
     EOF
-    chmod +x "$out/bin/opencode2"
+    chmod +x "$out/bin/opencode"
     runHook postInstall
   '';
 
   meta = {
-    description = "OpenCode v2 CLI, installed alongside OpenCode v1";
+    description = "OpenCode v2 CLI";
     homepage = "https://opencode.ai/v2/docs";
     license = lib.licenses.mit;
-    mainProgram = "opencode2";
+    mainProgram = "opencode";
     platforms = [ "x86_64-linux" ];
   };
 })

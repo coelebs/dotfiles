@@ -1,6 +1,6 @@
 # This module owns the primary user's portable configuration. Native Home
 # Manager options generate shell configuration; helper scripts live beside it.
-{ lib, omarchyShell ? null, opencode2, pinentryOmarchy, pkgs, pkgsUnstable, primaryUser, workdeck, onNixOS ? true, ... }:
+{ lib, omarchyShell ? null, opencode, pinentryOmarchy, pkgs, pkgsUnstable, primaryUser, workdeck, onNixOS ? true, ... }:
 
 {
   imports = [ ./shell.nix ./tmux.nix ./neovim.nix ./go.nix ];
@@ -35,10 +35,9 @@
       unzip
       # Use the pinned unstable Nixpkgs for these tools.
       pkgsUnstable.tuicr
-      pkgsUnstable.opencode
       pkgsUnstable.codex
       pkgsUnstable.t3code
-      opencode2
+      opencode
       rbw
     ]) ++ [ pinentryOmarchy workdeck ];
   };

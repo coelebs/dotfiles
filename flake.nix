@@ -56,7 +56,7 @@
           inherit omarchyShell;
           src = pinentry-omarchy;
         };
-      mkOpencode2 = pkgs: pkgs.callPackage ./packages/opencode2.nix { };
+      mkOpencode = pkgs: pkgs.callPackage ./packages/opencode.nix { };
     in
     {
       # Standalone Home Manager for Omarchy on Arch. The NixOS workstation
@@ -74,7 +74,7 @@
           extraSpecialArgs = {
             primaryUser = "vin";
             pkgsUnstable = mkPkgsUnstable system;
-            opencode2 = mkOpencode2 pkgs;
+            opencode = mkOpencode pkgs;
             workdeck = inputs.workdeck.packages.${system}.default;
             omarchyShell = null;
             pinentryOmarchy = mkPinentryOmarchy { inherit pkgs; };
@@ -95,7 +95,7 @@
           extraSpecialArgs = {
             primaryUser = "vincent";
             pkgsUnstable = mkPkgsUnstable system;
-            opencode2 = mkOpencode2 pkgs;
+            opencode = mkOpencode pkgs;
             workdeck = inputs.workdeck.packages.${system}.default;
             omarchyShell = null;
             pinentryOmarchy = mkPinentryOmarchy { inherit pkgs; };
@@ -119,7 +119,7 @@
           omarchy-shell = omarchyShell;
           pinentry-omarchy = mkPinentryOmarchy { inherit pkgs omarchyShell; };
           nixos-switch = pkgs.callPackage ./packages/nixos-switch.nix { };
-          opencode2 = mkOpencode2 pkgs;
+          opencode = mkOpencode pkgs;
           workdeck = inputs.workdeck.packages.${system}.default;
         };
 
@@ -131,7 +131,7 @@
           pkgsUnstable = mkPkgsUnstable hostSystem;
           omarchyShell = mkOmarchyShell { inherit pkgs pkgsUnstable; };
           pinentryOmarchy = mkPinentryOmarchy { inherit pkgs omarchyShell; };
-          opencode2 = mkOpencode2 pkgs;
+          opencode = mkOpencode pkgs;
           workdeck = inputs.workdeck.packages.${hostSystem}.default;
         in
         {
@@ -149,7 +149,7 @@
           # Keep unstable use visible in each module instead of hiding it in an
           # overlay. `omarchyShell` is built against the same Hyprland package.
           _module.args = {
-            inherit omarchyShell opencode2 pinentryOmarchy pkgsUnstable workdeck;
+            inherit omarchyShell opencode pinentryOmarchy pkgsUnstable workdeck;
           };
         };
 

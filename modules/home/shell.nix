@@ -16,7 +16,20 @@
     # Home Manager's session setup adds this before an interactive Zsh starts,
     # so the managed helper scripts remain available without editing PATH by hand.
     sessionPath = [ "$HOME/.local/bin" ];
+    # All shells and desktop applications use the single user-session agent.
+    sessionVariables.SSH_AUTH_SOCK = "$XDG_RUNTIME_DIR/ssh-agent.socket";
 
+  };
+
+  # Do not spawn an agent for each terminal. A user service provides one stable
+  # socket for shells, graphical applications, and long-lived tmux sessions.
+  systemd.user.services.ssh-agent = {
+    Unit.Description = "SSH key agent";
+    Service = {
+      ExecStart = "${pkgs.openssh}/bin/ssh-agent -D -a %t/ssh-agent.socket";
+      Restart = "on-failure";
+    };
+    Install.WantedBy = [ "default.target" ];
   };
 
   programs.bash = {
@@ -57,6 +70,10 @@
     };
     setOptions = [ "NO_BEEP" "NO_HIST_VERIFY" ];
     initContent = ''
+      # Home Manager's generated session script may be skipped by terminal
+      # descendants, so set the stable user-agent socket unconditionally.
+      export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+
       bindkey -s '^F' 'workdeck\n'
 
       cdhh() {

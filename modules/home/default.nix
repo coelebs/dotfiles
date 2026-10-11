@@ -32,6 +32,7 @@
       rapid-photo-downloader
       ripgrep
       stylua
+      transmission-remote-gtk
       unzip
       # Use the pinned unstable Nixpkgs for these tools.
       pkgsUnstable.tuicr

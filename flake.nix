@@ -6,6 +6,11 @@
 
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -72,6 +77,7 @@
           inherit pkgs;
           modules = [ ./modules/home/default.nix ];
           extraSpecialArgs = {
+            chatgpt = inputs.llm-agents.packages.${system}.chatgpt;
             primaryUser = "vin";
             pkgsUnstable = mkPkgsUnstable system;
             opencode = mkOpencode pkgs;
@@ -93,6 +99,7 @@
           inherit pkgs;
           modules = [ ./modules/home/default.nix ];
           extraSpecialArgs = {
+            chatgpt = inputs.llm-agents.packages.${system}.chatgpt;
             primaryUser = "vincent";
             pkgsUnstable = mkPkgsUnstable system;
             opencode = mkOpencode pkgs;
@@ -133,6 +140,7 @@
           pinentryOmarchy = mkPinentryOmarchy { inherit pkgs omarchyShell; };
           opencode = mkOpencode pkgs;
           workdeck = inputs.workdeck.packages.${hostSystem}.default;
+          chatgpt = inputs.llm-agents.packages.${hostSystem}.chatgpt;
         in
         {
           # Stable Nixpkgs still carries the legacy DMS module. Import the
@@ -149,7 +157,7 @@
           # Keep unstable use visible in each module instead of hiding it in an
           # overlay. `omarchyShell` is built against the same Hyprland package.
           _module.args = {
-            inherit omarchyShell opencode pinentryOmarchy pkgsUnstable workdeck;
+            inherit chatgpt omarchyShell opencode pinentryOmarchy pkgsUnstable workdeck;
           };
         };
 

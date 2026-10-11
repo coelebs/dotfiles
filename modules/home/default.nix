@@ -1,6 +1,6 @@
 # This module owns the primary user's portable configuration. Native Home
 # Manager options generate shell configuration; helper scripts live beside it.
-{ lib, omarchyShell ? null, opencode, pinentryOmarchy, pkgs, pkgsUnstable, primaryUser, workdeck, onNixOS ? true, ... }:
+{ chatgpt, lib, omarchyShell ? null, opencode, pinentryOmarchy, pkgs, pkgsUnstable, primaryUser, workdeck, onNixOS ? true, ... }:
 
 {
   imports = [ ./shell.nix ./tmux.nix ./neovim.nix ./go.nix ];
@@ -40,7 +40,7 @@
       pkgsUnstable.t3code
       opencode
       rbw
-    ]) ++ [ pinentryOmarchy workdeck ];
+    ]) ++ [ chatgpt pinentryOmarchy workdeck ];
   };
 
   programs.home-manager.enable = true;

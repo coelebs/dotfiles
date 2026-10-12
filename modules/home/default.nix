@@ -151,6 +151,16 @@
     mimeType = [ "application/epub+zip" "application/x-mobipocket-ebook" ];
   };
 
+  xdg.desktopEntries.t3code = {
+    name = "T3 Code (Alpha)";
+    comment = "Minimal web GUI for coding agents";
+    exec = "t3code-desktop %U";
+    icon = "t3code";
+    terminal = false;
+    categories = [ "Development" ];
+    settings.StartupWMClass = "t3code";
+  };
+
   # The Nix package provides the executable but no .desktop file.
   xdg.desktopEntries."rapid-photo-downloader" = {
     name = "Rapid Photo Downloader";

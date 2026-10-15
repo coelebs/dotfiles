@@ -1,6 +1,6 @@
 # This module owns the primary user's portable configuration. Native Home
 # Manager options generate shell configuration; helper scripts live beside it.
-{ chatgpt, lib, omarchyShell ? null, opencode, pinentryOmarchy, pkgs, pkgsUnstable, primaryUser, workdeck, onNixOS ? true, ... }:
+{ chatgpt, lib, omarchyShell ? null, opencode, pinentryOmarchy, pkgs, pkgsUnstable, primaryUser, t3code, workdeck, onNixOS ? true, ... }:
 
 {
   imports = [ ./shell.nix ./tmux.nix ./neovim.nix ./go.nix ];
@@ -37,7 +37,7 @@
       # Use the pinned unstable Nixpkgs for these tools.
       pkgsUnstable.tuicr
       pkgsUnstable.codex
-      pkgsUnstable.t3code
+      t3code
       opencode
       rbw
     ]) ++ [ chatgpt pinentryOmarchy workdeck ];
@@ -151,16 +151,6 @@
     mimeType = [ "application/epub+zip" "application/x-mobipocket-ebook" ];
   };
 
-  xdg.desktopEntries.t3code = {
-    name = "T3 Code (Alpha)";
-    comment = "Minimal web GUI for coding agents";
-    exec = "t3code-desktop %U";
-    icon = "t3code";
-    terminal = false;
-    categories = [ "Development" ];
-    settings.StartupWMClass = "t3code";
-  };
-
   # The Nix package provides the executable but no .desktop file.
   xdg.desktopEntries."rapid-photo-downloader" = {
     name = "Rapid Photo Downloader";
@@ -169,6 +159,20 @@
     icon = "camera-photo";
     terminal = false;
     categories = [ "Graphics" "Photography" ];
+  };
+
+  systemd.user.services.t3code = {
+    Unit = {
+      Description = "T3 Code nightly server";
+      After = [ "network-online.target" ];
+    };
+    Service = {
+      ExecStart = "${t3code}/bin/t3 start --no-browser";
+      Environment = [ "PATH=${lib.makeBinPath [ opencode pkgs.git ]}:/usr/bin" ];
+      Restart = "on-failure";
+      RestartSec = 2;
+    };
+    Install.WantedBy = [ "default.target" ];
   };
 
 }

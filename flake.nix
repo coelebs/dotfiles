@@ -6,6 +6,9 @@
 
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+    # Use master only where NixOS unstable has not caught up yet.
+    nixpkgs-master.url = "github:NixOS/nixpkgs";
+
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -51,6 +54,12 @@
           config.allowUnfree = true;
         };
 
+      mkPkgsMaster = system:
+        import inputs.nixpkgs-master {
+          inherit system;
+          config.allowUnfree = true;
+        };
+
       mkOmarchyShell = { pkgs, pkgsUnstable }:
         pkgs.callPackage ./packages/omarchy-shell.nix {
           src = omarchy;
@@ -62,6 +71,7 @@
           src = pinentry-omarchy;
         };
       mkOpencode = pkgs: pkgs.callPackage ./packages/opencode.nix { };
+      mkT3code = pkgs: pkgs.callPackage ./packages/t3code.nix { };
     in
     {
       # Standalone Home Manager for Omarchy on Arch. The NixOS workstation
@@ -80,7 +90,8 @@
             chatgpt = inputs.llm-agents.packages.${system}.chatgpt;
             primaryUser = "vin";
             pkgsUnstable = mkPkgsUnstable system;
-            opencode = mkOpencode pkgs;
+            t3code = mkT3code (mkPkgsMaster system);
+            opencode = mkOpencode (mkPkgsMaster system);
             workdeck = inputs.workdeck.packages.${system}.default;
             omarchyShell = null;
             pinentryOmarchy = mkPinentryOmarchy { inherit pkgs; };
@@ -102,7 +113,8 @@
             chatgpt = inputs.llm-agents.packages.${system}.chatgpt;
             primaryUser = "vincent";
             pkgsUnstable = mkPkgsUnstable system;
-            opencode = mkOpencode pkgs;
+            t3code = mkT3code (mkPkgsMaster system);
+            opencode = mkOpencode (mkPkgsMaster system);
             workdeck = inputs.workdeck.packages.${system}.default;
             omarchyShell = null;
             pinentryOmarchy = mkPinentryOmarchy { inherit pkgs; };
@@ -126,7 +138,8 @@
           omarchy-shell = omarchyShell;
           pinentry-omarchy = mkPinentryOmarchy { inherit pkgs omarchyShell; };
           nixos-switch = pkgs.callPackage ./packages/nixos-switch.nix { };
-          opencode = mkOpencode pkgs;
+          opencode = mkOpencode (mkPkgsMaster system);
+          t3code = mkT3code (mkPkgsMaster system);
           workdeck = inputs.workdeck.packages.${system}.default;
         };
 
@@ -136,9 +149,10 @@
         let
           hostSystem = pkgs.stdenv.hostPlatform.system;
           pkgsUnstable = mkPkgsUnstable hostSystem;
+          pkgsMaster = mkPkgsMaster hostSystem;
           omarchyShell = mkOmarchyShell { inherit pkgs pkgsUnstable; };
           pinentryOmarchy = mkPinentryOmarchy { inherit pkgs omarchyShell; };
-          opencode = mkOpencode pkgs;
+          opencode = mkOpencode pkgsMaster;
           workdeck = inputs.workdeck.packages.${hostSystem}.default;
           chatgpt = inputs.llm-agents.packages.${hostSystem}.chatgpt;
         in
@@ -157,6 +171,7 @@
           # Keep unstable use visible in each module instead of hiding it in an
           # overlay. `omarchyShell` is built against the same Hyprland package.
           _module.args = {
+            t3code = mkT3code pkgsMaster;
             inherit chatgpt omarchyShell opencode pinentryOmarchy pkgsUnstable workdeck;
           };
         };

@@ -193,7 +193,8 @@
         "nixpkgs-unstable": "nixpkgs-unstable",
         "omarchy": "omarchy",
         "pinentry-omarchy": "pinentry-omarchy",
-        "workdeck": "workdeck"
+        "workdeck": "workdeck",
+        "nixpkgs-master": "nixpkgs-master"
       }
     },
     "systems": {
@@ -249,6 +250,21 @@
       "original": {
         "owner": "coelebs",
         "repo": "workdeck",
+        "type": "github"
+      }
+    },
+    "nixpkgs-master": {
+      "locked": {
+        "lastModified": 1791980766,
+        "narHash": "sha256-GFTeo91XUhwVpDWn8nyz+WzbQjxxUfut8GQppBQZoOk=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "f1ed6080c3ba5e544072cbf3732e7e02ecf8ea9e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
         "type": "github"
       }
     }

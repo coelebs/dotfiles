@@ -2,6 +2,7 @@ local M = {}
 
 function M.setup()
   require('oil').setup()
+  require('diffview').setup()
   require('gitsigns').setup({ attach_to_untracked = true })
   require('lualine').setup()
   require('harpoon').setup()
@@ -37,6 +38,11 @@ function M.setup()
 
   local map = vim.keymap.set
   map('n', '<leader>gg', '<cmd>Git<cr>')
+  map('n', '<leader>dv', '<cmd>DiffviewOpen<cr>')
+  map('n', '<leader>dc', '<cmd>DiffviewClose<cr>')
+  map('n', '<leader>df', '<cmd>DiffviewFileHistory %<cr>')
+  map('n', '<leader>dl', '<cmd>DiffviewFileHistory<cr>')
+  map('n', '<leader>da', '<cmd>DiffviewFileHistory --all<cr>')
   for key, command in pairs({
     gd = 'preview_hunk',
     gs = 'stage_hunk',

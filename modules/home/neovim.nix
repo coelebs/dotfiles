@@ -9,6 +9,7 @@
       cmp-nvim-lsp
       cmp-path
       copilot-vim
+      diffview-nvim
       gitsigns-nvim
       harpoon
       lualine-nvim
